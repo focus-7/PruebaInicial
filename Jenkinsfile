@@ -39,7 +39,7 @@ pipeline {
               submoduleCfg: [], 
               userRemoteConfigs: [[
               credentialsId: 'GitHub_brayan.pinilla', 
-              url:'https://github.com/focus-7/PruebaInicial'
+              url:'https://github.com/focus-7/PruebaInicial.git'
               ]]
               ])
       }
@@ -65,7 +65,7 @@ pipeline {
     stage('Build') {
       steps {
         echo "------------>Build<------------"
-        sh './gradlew build -x test'
+        sh 'gradle --b ./build.gradle build -x test'
       }
     }  
   }

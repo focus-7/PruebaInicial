@@ -27,24 +27,6 @@ pipeline {
 
   //Aquí comienzan los “items” del Pipeline
   stages{
-    stage('Checkout') {
-      steps{
-          echo "------------>Checkout<------------"
-              checkout([
-              $class: 'GitSCM', 
-              branches: [[name: '*/main']], 
-              doGenerateSubmoduleConfigurations: false, 
-              extensions: [], 
-              gitTool: 'Default', 
-              submoduleCfg: [], 
-              userRemoteConfigs: [[
-              credentialsId: 'GitHub_brayan.pinilla', 
-              url:'https://github.com/focus-7/PruebaInicial.git'
-              ]]
-              ])
-      }
-    }
-    
     stage('Compile & Unit Tests') {
       steps{
         echo "------------>Compile & Unit Tests<------------"

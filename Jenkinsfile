@@ -30,16 +30,15 @@ pipeline {
     stage('Build') {
       steps {
         echo "------------>Build<------------"
-        sh './gradlew --b ./build.gradle build -x test'
+        sh './gradlew build -x test'
       }
     } 
     stage('Compile & Unit Tests') {
       steps{      
         echo "------------>>Clean<------------"
-				sh './gradlew clean'
-
-				echo "------------>Unit Tests<------------"
-				sh './gradlew test'
+	sh './gradlew clean'
+	echo "------------>Unit Tests<------------"
+	sh './gradlew test'
       }
     }
     stage('Static Code Analysis') {

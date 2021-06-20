@@ -26,15 +26,21 @@ pipeline {
 */
 
   //Aquí comienzan los “items” del Pipeline
-  stages{
+  stages{ 
+    stage('Build') {
+      steps {
+        echo "------------>Build<------------"
+        sh './gradlew build -x test'
+      }
+    } 
     stage('Compile & Unit Tests') {
-      steps{
-        echo "------------>Compile & Unit Tests<------------"
-        sh 'chmod +x gradlew'
-        sh './gradlew --b ./build.gradle test'
+      steps{      
+        echo "------------>>Clean<------------"
+	sh './gradlew clean'
+	echo "------------>Unit Tests<------------"
+	sh './gradlew test'
       }
     }
-
     stage('Static Code Analysis') {
       steps{
         echo '------------>Análisis de código estático<------------'
@@ -42,14 +48,7 @@ pipeline {
         sh "${tool name: 'SonarScanner', type:'hudson.plugins.sonar.SonarRunnerInstallation'}/bin/sonar-scanner -Dproject.settings=sonar-project.properties"
         }
         }
-    }
-
-    stage('Build') {
-      steps {
-        echo "------------>Build<------------"
-        sh './gradlew --b ./build.gradle build -x test'
-      }
-    }  
+    } 
   }
 
   post {

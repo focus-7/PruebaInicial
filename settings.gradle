@@ -1,2 +1,4 @@
 rootProject.name = "PruebaInicial"
 include ':app'
+include ':domain'
+include ':infraestructure'

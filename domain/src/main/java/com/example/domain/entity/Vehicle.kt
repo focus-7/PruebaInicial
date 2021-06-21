@@ -21,7 +21,7 @@ abstract class Vehicle(private var plate: String) : Serializable {
             }
             else -> {
                 val days = hours / MAX_HOUR_DAY
-                val restOfHours = (hours % MAX_HOUR_DAY) * MAX_HOUR_DAY
+                val restOfHours = hours % MAX_HOUR_DAY
                 priceDay * days + priceHour * restOfHours
             }
         }

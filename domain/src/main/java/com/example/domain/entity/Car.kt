@@ -6,7 +6,7 @@ class Car(plate: String) : Vehicle(plate) {
         const val DAY_PRICE_CAR = 8000.0
     }
 
-    fun calculatePayment(hours: Int): Double {
+    fun calculatePaymentCar(hours: Int): Double {
         return calculatePaymentVehicle(HOUR_PRICE_CAR, DAY_PRICE_CAR, hours)
     }
 }

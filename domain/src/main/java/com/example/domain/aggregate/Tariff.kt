@@ -9,7 +9,7 @@ import com.example.domain.util.ConvertDate.convertLongToTime
 import java.io.Serializable
 import java.util.*
 
-class Tariff(entryDate: Long, vehicle: Vehicle) : Serializable {
+class Tariff(var entryDate: Long, vehicle: Vehicle) : Serializable {
     companion object {
         const val MILLS_HOUR = 3600000
     }

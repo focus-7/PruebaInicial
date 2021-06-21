@@ -2,7 +2,7 @@ package com.example.domain.entity
 
 import java.io.Serializable
 
-abstract class Vehicle(private var plate: String) : Serializable {
+abstract class Vehicle(var plate: String) : Serializable {
     companion object {
         const val MAX_HOUR = 9
         const val MAX_HOUR_DAY = 24

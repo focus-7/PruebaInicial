@@ -1,6 +1,6 @@
 package com.example.domain.entity
 
-class Motorcycle(plate: String, private var cylinderCapacity: Int) : Vehicle(plate) {
+class Motorcycle(plate: String, var cylinderCapacity: Int) : Vehicle(plate) {
     companion object {
         const val HOUR_PRICE_MOTORCYCLE = 500.0
         const val DAY_PRICE_MOTORCYCLE = 4000.0

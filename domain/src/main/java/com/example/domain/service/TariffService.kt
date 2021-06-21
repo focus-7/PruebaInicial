@@ -23,11 +23,10 @@ class TariffService @Inject constructor(private val tariffRepository: TariffRepo
         }
     }
 
-    fun enterVehicle(entryDate: Long, vehicle: Vehicle): String {
+    fun enterVehicle(entryDate: Long, vehicle: Vehicle) {
         val tariff = Tariff(entryDate, vehicle)
         if (checkAvailableVehicleSpace(vehicle)) {
             tariffRepository.enterVehicle(tariff)
-            return "¡Coche aparcado con éxito!"
         } else {
             throw MaximumVehicleCapacityException()
         }

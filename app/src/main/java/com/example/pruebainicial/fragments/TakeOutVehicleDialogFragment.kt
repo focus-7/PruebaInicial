@@ -12,7 +12,7 @@ import com.example.domain.aggregate.Tariff
 import com.example.pruebainicial.R
 import com.example.pruebainicial.databinding.DialogTakeOutVehicleBinding
 import com.example.pruebainicial.utils.Resource
-import com.example.pruebainicial.utils.showIf
+import com.example.pruebainicial.utils.show
 import com.example.pruebainicial.utils.showToast
 import com.example.pruebainicial.viewmodel.TariffViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -63,9 +63,9 @@ class TakeOutVehicleDialogFragment : DialogFragment() {
 
     private fun saveData() {
         viewModel.takeOutVehicle(tariffOut).observe(viewLifecycleOwner, { result ->
-            loader.showIf { result is Resource.Loading }
             when (result) {
                 is Resource.Loading -> {
+                    loader.show()
                 }
                 is Resource.Success -> {
                     findNavController().navigate(R.id.mainFragment)

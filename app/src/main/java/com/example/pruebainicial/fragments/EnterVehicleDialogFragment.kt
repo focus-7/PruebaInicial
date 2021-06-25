@@ -13,7 +13,10 @@ import com.example.domain.entity.Motorcycle
 import com.example.domain.entity.Vehicle
 import com.example.pruebainicial.R
 import com.example.pruebainicial.databinding.DialogAddVehicleBinding
-import com.example.pruebainicial.utils.*
+import com.example.pruebainicial.utils.Resource
+import com.example.pruebainicial.utils.hide
+import com.example.pruebainicial.utils.show
+import com.example.pruebainicial.utils.showToast
 import com.example.pruebainicial.viewmodel.TariffViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
@@ -91,15 +94,15 @@ class EnterVehicleDialogFragment : DialogFragment() {
 
     private fun saveData(date: Long, vehicle: Vehicle) {
         viewModel.enterVehicle(date, vehicle).observe(viewLifecycleOwner, { result ->
-            loader.showIf { result is Resource.Loading }
             when (result) {
-                is Resource.Loading -> {
-                }
                 is Resource.Success -> {
                     findNavController().navigate(R.id.mainFragment)
                 }
                 is Resource.Failure -> {
                     showToast("Ocurrió un error al guardar los datos ${result.exception}")
+                }
+                is Resource.Loading -> {
+                    loader.show()
                 }
             }
         })

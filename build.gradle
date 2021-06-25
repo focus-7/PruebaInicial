@@ -15,7 +15,6 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
-apply plugin: "com.vanniktech.android.junit.jacoco"
 
 allprojects {
     repositories {

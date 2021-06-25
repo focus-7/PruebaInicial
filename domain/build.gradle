@@ -34,7 +34,7 @@ android {
 }
 
 jacoco {
-    toolVersion = '0.8.1'
+    toolVersion = '0.8.7'
 }
 
 tasks.withType(Test) {

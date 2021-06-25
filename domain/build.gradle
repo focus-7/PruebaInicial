@@ -37,12 +37,33 @@ jacoco {
     toolVersion = '0.8.1'
 }
 
-task jacocoTestReport(type: JacocoReport, dependsOn: "testDebugUnitTest") {
-    group = "Reporting"
-    description = "Generate Jacoco coverage reports after running tests."
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+    jacoco.excludes = ['jdk.internal.*']
+
+    testLogging {
+        exceptionFormat "full"
+        events "skipped", "passed", "failed"
+        showStandardStreams true
+    }
+    finalizedBy(jacocoTestReport)
+}
+
+task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
     reports {
         xml.enabled = true
+        html.enabled = true
     }
+
+    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*', '**/data/models/*']
+    def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/debug", excludes: fileFilter)
+    def mainSrc = "${project.projectDir}/src/main/java"
+
+    sourceDirectories.from(files([mainSrc]))
+    classDirectories.from(files([debugTree]))
+    executionData.from(fileTree(dir: "$buildDir", includes: [
+            "jacoco/testDebugUnitTest.exec",
+            "outputs/code-coverage/connected/*coverage.ec"]))
 }
 
 dependencies {

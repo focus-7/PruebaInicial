@@ -1,3 +1,23 @@
 <resources>
-    <string name="app_name">PruebaInicial</string>
+    <string name="app_name">Parqueadero</string>
+    <string name="search_no_results">Vehículo no encontrado</string>
+    <string name="add_vehicle">Agregar </string>
+    <string name="tv_tipo_vehiculo">Tipo de vehículo:</string>
+    <string name="rb_carro">Carro</string>
+    <string name="rb_moto">Moto</string>
+    <string name="tv_placa">Placa:</string>
+    <string name="et_placa_oculta">ADC56F</string>
+    <string name="tv_cilindraje">Cilindraje (CC):</string>
+    <string name="et_cilindraje_oculto">150</string>
+    <string name="btn_cancelar">Cancelar</string>
+    <string name="btn_agregar">Añadir</string>
+    <string name="error">Error en el formulario</string>
+    <string name="error_data">Hay campos que faltan por llenar</string>
+    <string name="confirm">Aceptar</string>
+    <string name="tv_entry_date">Fecha de entrada:</string>
+    <string name="tv_departure_date">Fecha de salida:</string>
+    <string name="tv_payment">Precio:</string>
+    <string name="btn_pagar">Pagar</string>
+    <string name="btn_cobrar">Cobrar</string>
+    <string name="txt_cylindercapacity">CC. %1$s</string>
 </resources>

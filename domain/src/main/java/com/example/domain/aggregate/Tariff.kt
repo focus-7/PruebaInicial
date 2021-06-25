@@ -35,7 +35,8 @@ class Tariff(var entryDate: Long, vehicle: Vehicle) : Serializable {
     }
 
     private fun calculateTariff() {
-        val hours = ((departureDate - vehicleEntryDate) / MILLS_HOUR).toInt()
+        var hours = ((departureDate - vehicleEntryDate) / MILLS_HOUR).toInt()
+        if (hours == 0) hours = 1
         amount = when (vehicle) {
             is Car -> (vehicle as Car).calculatePaymentCar(hours)
             is Motorcycle -> (vehicle as Motorcycle).calculatePaymentMotorcycle(hours)
@@ -46,4 +47,5 @@ class Tariff(var entryDate: Long, vehicle: Vehicle) : Serializable {
     fun getEntryDateString() = vehicleEntryDate.convertLongToTime()
 
     fun getDepartureDateString() = departureDate.convertLongToTime()
+
 }

@@ -32,13 +32,20 @@ class TariffService @Inject constructor(private val tariffRepository: TariffRepo
         }
     }
 
-    fun takeOutVehicle(departureDate: Long, tariff: Tariff): Double {
-        tariff.departureDate = departureDate
-        return tariff.amount ?: throw CalculateAmountException()
+    fun takeOutVehicle(tariff: Tariff) {
+        if (tariff.amount != null) {
+            tariffRepository.takeOutVehicle(tariff)
+        } else {
+            throw CalculateAmountException()
+        }
     }
 
 
-    fun getVehicle(): List<Tariff> {
+    fun getVehicles(): List<Tariff> {
         return tariffRepository.getVehicles()
+    }
+
+    fun getVehiclesByPlate(plate: String): List<Tariff> {
+        return tariffRepository.searchVehicleByPlate(plate)
     }
 }

@@ -27,4 +27,7 @@ class TariffRepositoryRoom @Inject constructor(private val tariffDao: TariffDao)
         return tariffDao.getVehicles().asVehicleList()
     }
 
+    override fun searchVehicleByPlate(plate: String): List<Tariff> {
+        return tariffDao.searchVehicleByPlate(plate).asVehicleList()
+    }
 }

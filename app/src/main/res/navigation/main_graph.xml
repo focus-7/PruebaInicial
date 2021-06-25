@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.pruebainicial.fragments.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_mainFragment_to_vehicleDialog"
+            app:destination="@id/vehicleDialog" />
+        <action
+            android:id="@+id/action_mainFragment_to_takeOutVehicleDialogFragment"
+            app:destination="@id/takeOutVehicleDialogFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/vehicleDialog"
+        android:name="com.example.pruebainicial.fragments.EnterVehicleDialogFragment"
+        android:label="VehicleDialog"
+        tools:layout="@layout/dialog_add_vehicle" />
+    <dialog
+        android:id="@+id/takeOutVehicleDialogFragment"
+        android:name="com.example.pruebainicial.fragments.TakeOutVehicleDialogFragment"
+        android:label="dialog_take_out_vehicle"
+        tools:layout="@layout/dialog_take_out_vehicle" />
+</navigation>

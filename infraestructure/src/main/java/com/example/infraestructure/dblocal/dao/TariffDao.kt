@@ -18,4 +18,7 @@ interface TariffDao {
 
     @Query("SELECT * FROM tariff")
     fun getVehicles(): List<TariffEntityRoom>
+
+    @Query("SELECT * FROM tariff WHERE plate LIKE :plateS")
+    fun searchVehicleByPlate(plateS: String): List<TariffEntityRoom>
 }

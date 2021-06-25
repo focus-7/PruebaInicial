@@ -7,17 +7,16 @@ import java.util.*
 object ConvertDate {
     fun Long.convertLongToTime(): String {
         val date = Date(this)
-        val format = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+        val format = SimpleDateFormat("dd/MM/yyyy HH:mm a", Locale.getDefault())
         return format.format(date)
     }
 
     fun String.getLongDate(): Long =
         try {
-            val d: Date? = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).parse(this)
+            val d: Date? = SimpleDateFormat("dd/MM/yyyy HH:mm a", Locale.getDefault()).parse(this)
             d?.time ?: 0
         } catch (e: ParseException) {
             e.printStackTrace()
             0
         }
-
 }

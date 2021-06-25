@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="isMotorcycle"
+            type="java.lang.Boolean" />
+
+        <variable
+            name="tariff"
+            type="com.example.domain.aggregate.Tariff" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_normal"
+        android:layout_marginVertical="@dimen/margin_small"
+        android:padding="@dimen/margin_small"
+        app:cardCornerRadius="@dimen/common_radius"
+        app:cardElevation="@dimen/common_elevation">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/mcv_vehicle"
+                android:layout_width="@dimen/home_image_size"
+                android:layout_height="@dimen/home_image_size"
+                android:layout_margin="@dimen/margin_normal"
+                app:cardCornerRadius="@dimen/common_radius"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/img_vehicle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@{isMotorcycle ? @drawable/ic_baseline_sports_motorsports_24 : @drawable/ic_baseline_directions_car_24}"
+                    app:tint="@color/teal_700"
+                    tools:ignore="ContentDescription" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/txtPlate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_normal"
+                android:maxLines="1"
+                android:text="@{tariff.vehicle.plate}"
+                android:textColor="@color/purple_700"
+                android:textSize="@dimen/text_size_normal"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/mcv_vehicle"
+                app:layout_constraintTop_toTopOf="@+id/mcv_vehicle"
+                tools:text="AAA000" />
+
+            <TextView
+                android:id="@+id/tvEntryVehicle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/common_elevation"
+                android:text="@{tariff.getEntryDateString()}"
+                android:textColor="@color/purple_700"
+                app:layout_constraintStart_toEndOf="@id/mcv_vehicle"
+                app:layout_constraintTop_toBottomOf="@id/txtPlate"
+                tools:text="12/12/2012 8:00 am" />
+
+            <TextView
+                android:id="@+id/tvCylinderCapacity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/common_elevation"
+                android:textColor="@color/purple_700"
+                app:layout_constraintStart_toEndOf="@id/mcv_vehicle"
+                app:layout_constraintTop_toBottomOf="@id/tvEntryVehicle"
+                tools:text="CC 150" />
+
+            <Button
+                android:id="@+id/btn_take_out_vehicle"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/common_elevation"
+                android:layout_marginVertical="@dimen/margin_small"
+                android:text="@string/btn_cobrar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvEntryVehicle" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

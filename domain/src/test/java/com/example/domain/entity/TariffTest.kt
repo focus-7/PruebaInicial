@@ -108,6 +108,7 @@ class TariffTest {
         assertEquals(1000.0, expected.amount)
     }
 
+
     @Test
     fun tariff_createTariffWithMotorcyclePlateInitACanEntryMonday() {
         //Arrange
@@ -132,6 +133,20 @@ class TariffTest {
 
         //Assert
         assertNotNull(expected)
+    }
+
+    @Test
+    fun tariff_vehicleDepartureDateWithCar_successful() {
+        //Arrange
+        val date = Date(1624366800000) //June 22, 2021, 1:00 p.m
+        val vehicle = Car("TYU789")
+        val car = Tariff(1624352400000, vehicle)  //June 22, 2021, 9:00 a.m
+
+        //Act
+        car.vehicleDepartureDate = date.time
+
+        //Assert
+        assertNotNull(car.vehicleDepartureDate)
     }
 
     @Test

@@ -123,7 +123,7 @@ class TariffTest {
     @Test
     fun convert_motorcycleEntryDateString_successful() {
         //Arrange
-        val date = Date(1624352400000)
+        val date = Date(1624352400000) //June 22, 2021, 9:00 a.m
         val format = SimpleDateFormat("dd/MM/yyyy HH:mm a", Locale.getDefault())
         val vehicle = Motorcycle("TYU78E", 150)
         val motorcycle = Tariff(date.time, vehicle)
@@ -138,13 +138,13 @@ class TariffTest {
     @Test
     fun convert_carDepartureDateString_successful() {
         //Arrange
-        val date = Date(1624366800000)
+        val date = Date(1624366800000) //June 22, 2021, 1:00 p.m
         val format = SimpleDateFormat("dd/MM/yyyy HH:mm a", Locale.getDefault())
         val vehicle = Car("TYU78E")
-        val car = Tariff(1624352400000, vehicle)
+        val car = Tariff(1624352400000, vehicle)  //June 22, 2021, 9:00 a.m
 
         //Act
-        car.vehicleDepartureDate = date.time //June 22, 2021, 1:00 p.m
+        car.vehicleDepartureDate = date.time
         val expected = car.getDepartureDateString()
 
         //Assert

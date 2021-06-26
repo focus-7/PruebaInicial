@@ -3,10 +3,14 @@ package com.example.domain.service
 import com.example.domain.aggregate.Tariff
 import com.example.domain.entity.Car
 import com.example.domain.entity.Motorcycle
+import org.junit.Assert.assertNotNull
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.BDDMockito.given
 import org.mockito.Mock
+import org.mockito.Mockito.mock
 import org.mockito.junit.MockitoJUnitRunner
+
 
 @RunWith(MockitoJUnitRunner::class)
 class TariffServiceTest {
@@ -34,6 +38,7 @@ class TariffServiceTest {
         //Act
         tariffService.takeOutVehicle(motorcycle)
     }
+
     @Test
     fun get_vehiclesByPlate_successful() {
         //Arrange
@@ -42,9 +47,24 @@ class TariffServiceTest {
         //Act
         tariffService.getVehiclesByPlate(vehicle.plate)
     }
+
     @Test
     fun get_allVehicles_successful() {
         //Act
         assert(tariffService.getVehicles().isNullOrEmpty())
+    }
+
+    @Test
+    fun testMockingFinalMethod() {
+        //Arrange
+        val entryVehicle = 1624352400000 //June 22, 2021, 9:00 a.m
+        val vehicle = Motorcycle("TYU78E", 150)
+
+        //Act
+        tariffService.enterVehicle(entryVehicle, vehicle)
+
+        val mock: TariffService = mock(TariffService::class.java)
+
+        assertNotNull(mock.getVehicles())
     }
 }

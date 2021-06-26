@@ -20,8 +20,6 @@ import com.example.pruebainicial.utils.showToast
 import com.example.pruebainicial.viewmodel.TariffViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.dialog_add_vehicle.*
-import kotlinx.android.synthetic.main.loader.*
 import java.util.*
 
 @AndroidEntryPoint
@@ -48,9 +46,9 @@ class EnterVehicleDialogFragment : DialogFragment() {
     private fun eventsUI() {
         binding.rGroupVehicle.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked == R.id.typeMotorcycle)
-                cylinderContainer.show()
+                binding.cylinderContainer.show()
             if (isChecked == R.id.typeCar)
-                cylinderContainer.hide()
+                binding.cylinderContainer.hide()
         }
     }
 
@@ -102,7 +100,7 @@ class EnterVehicleDialogFragment : DialogFragment() {
                     showToast("Ocurrió un error al guardar los datos ${result.exception}")
                 }
                 is Resource.Loading -> {
-                    loader.show()
+                    binding.loader.loaderContainer.show()
                 }
             }
         })

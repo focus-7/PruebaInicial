@@ -3,8 +3,7 @@ package com.example.domain.aggregate
 import com.example.domain.entity.Car
 import com.example.domain.entity.Motorcycle
 import com.example.domain.entity.Vehicle
-import com.example.domain.exception.CalculateAmountException
-import com.example.domain.exception.VehicleEntryRestriction
+import com.example.domain.exception.InvalidDataException
 import com.example.domain.util.ConvertDate.convertLongToTime
 import java.io.Serializable
 import java.util.*
@@ -31,7 +30,7 @@ class Tariff(var entryDate: Long, vehicle: Vehicle) : Serializable {
         calendar.timeInMillis = entryDate
         val day = calendar.get(Calendar.DAY_OF_WEEK)
         if (vehicle.plateInitWithA() && day != Calendar.SUNDAY && day != Calendar.MONDAY)
-            throw VehicleEntryRestriction()
+            throw InvalidDataException("Vehiculo no autorizado a ingresar")
     }
 
     private fun calculateTariff() {
@@ -40,7 +39,7 @@ class Tariff(var entryDate: Long, vehicle: Vehicle) : Serializable {
         amount = when (vehicle) {
             is Car -> (vehicle as Car).calculatePaymentCar(hours)
             is Motorcycle -> (vehicle as Motorcycle).calculatePaymentMotorcycle(hours)
-            else -> throw CalculateAmountException()
+            else -> throw InvalidDataException("No se logro calcular el pago.")
         }
     }
 

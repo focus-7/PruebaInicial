@@ -4,8 +4,7 @@ import com.example.domain.aggregate.Tariff
 import com.example.domain.entity.Car
 import com.example.domain.entity.Motorcycle
 import com.example.domain.entity.Vehicle
-import com.example.domain.exception.CalculateAmountException
-import com.example.domain.exception.MaximumVehicleCapacityException
+import com.example.domain.exception.InvalidDataException
 import com.example.domain.repository.TariffRepository
 import javax.inject.Inject
 
@@ -19,7 +18,7 @@ class TariffService @Inject constructor(private val tariffRepository: TariffRepo
         return when (vehicle) {
             is Car -> (tariffRepository.getQuantityOfVehicles(1) < MAX_CANT_CAR)
             is Motorcycle -> (tariffRepository.getQuantityOfVehicles(2) < MAX_CANT_MOTORCYCLE)
-            else -> throw MaximumVehicleCapacityException()
+            else -> throw InvalidDataException("No hay campo disponible para el vehículo.")
         }
     }
 
@@ -28,7 +27,7 @@ class TariffService @Inject constructor(private val tariffRepository: TariffRepo
         if (checkAvailableVehicleSpace(vehicle)) {
             tariffRepository.enterVehicle(tariff)
         } else {
-            throw MaximumVehicleCapacityException()
+            throw InvalidDataException("No hay campo disponible para el vehículo.")
         }
     }
 
@@ -36,7 +35,7 @@ class TariffService @Inject constructor(private val tariffRepository: TariffRepo
         if (tariff.amount != null) {
             tariffRepository.takeOutVehicle(tariff)
         } else {
-            throw CalculateAmountException()
+            throw InvalidDataException("No se logro calcular el pago.")
         }
     }
 

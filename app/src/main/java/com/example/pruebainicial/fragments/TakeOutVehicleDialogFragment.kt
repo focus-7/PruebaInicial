@@ -16,7 +16,6 @@ import com.example.pruebainicial.utils.show
 import com.example.pruebainicial.utils.showToast
 import com.example.pruebainicial.viewmodel.TariffViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.loader.*
 import java.util.*
 
 @AndroidEntryPoint
@@ -65,7 +64,7 @@ class TakeOutVehicleDialogFragment : DialogFragment() {
         viewModel.takeOutVehicle(tariffOut).observe(viewLifecycleOwner, { result ->
             when (result) {
                 is Resource.Loading -> {
-                    loader.show()
+                    binding.loader.loaderContainer.show()
                 }
                 is Resource.Success -> {
                     findNavController().navigate(R.id.mainFragment)

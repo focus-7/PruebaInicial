@@ -14,8 +14,6 @@ import com.example.pruebainicial.databinding.FragmentMainBinding
 import com.example.pruebainicial.utils.*
 import com.example.pruebainicial.viewmodel.TariffViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_main.*
-import kotlinx.android.synthetic.main.loader.*
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
@@ -67,7 +65,7 @@ class MainFragment : Fragment() {
 
     private fun subscribeUI() = with(binding) {
         viewModel.getVehicles().observe(viewLifecycleOwner, Observer { result ->
-            loader.showIf { result is Resource.Loading }
+            loader.loaderContainer.showIf { result is Resource.Loading }
             when (result) {
                 is Resource.Loading -> {
                     emptyContainer.root.hide()

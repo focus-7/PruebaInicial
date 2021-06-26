@@ -4,7 +4,7 @@ import com.example.domain.aggregate.Tariff
 import com.example.domain.entity.Car
 import com.example.domain.entity.Motorcycle
 import com.example.domain.entity.Vehicle
-import com.example.domain.exception.VehicleTypeException
+import com.example.domain.exception.InvalidDataException
 import com.example.infraestructure.dblocal.entity.TariffEntityRoom
 
 fun Tariff.asTariffEntity(): TariffEntityRoom {
@@ -15,7 +15,7 @@ fun Tariff.asTariffEntity(): TariffEntityRoom {
             cc = (vehicle as Motorcycle).cylinderCapacity
             2
         }
-        else -> throw VehicleTypeException()
+        else -> throw InvalidDataException("No se puede definir el tipo de vehiculo")
     }
     return TariffEntityRoom(
         vehicle.plate,
@@ -31,7 +31,7 @@ fun List<TariffEntityRoom>.asVehicleList(): List<Tariff> {
         val newVehicle: Vehicle = when (it.type) {
             1 -> Car(it.plate)
             2 -> Motorcycle(it.plate, it.cylinderCapacity ?: 0)
-            else -> throw VehicleTypeException()
+            else -> throw InvalidDataException("No se puede definir el tipo de vehiculo")
         }
         Tariff(it.entryDate, newVehicle)
     }

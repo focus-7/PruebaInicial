@@ -1,7 +1,7 @@
 package com.example.domain.entity
 
 import com.example.domain.aggregate.Tariff
-import com.example.domain.exception.VehicleEntryRestriction
+import com.example.domain.exception.InvalidDataException
 import org.junit.Assert.*
 
 import org.junit.Test
@@ -85,7 +85,7 @@ class TariffTest {
         try {
             //Act
             Tariff(entryVehicle, vehicle)
-        } catch (ex: VehicleEntryRestriction) {
+        } catch (ex: InvalidDataException) {
             //Assert
             assertEquals("Vehiculo no autorizado a ingresar", ex.message)
         }

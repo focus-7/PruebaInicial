@@ -37,7 +37,9 @@
                 android:text="@string/rb_moto" />
         </RadioGroup>
 
-        <include layout="@layout/loader" />
+        <include
+            android:id="@+id/loader"
+            layout="@layout/loader" />
 
         <LinearLayout
             android:id="@+id/contenedorPlaca"

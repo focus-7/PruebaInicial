@@ -34,7 +34,7 @@ android {
 }
 
 jacoco {
-    toolVersion = '0.8.1'
+    toolVersion = "$jacocoVersion"
 }
 
 task jacocoTestReport(type: JacocoReport, dependsOn: "testDebugUnitTest") {

@@ -4,16 +4,18 @@ import com.example.domain.aggregate.Tariff
 import com.example.domain.entity.Car
 import com.example.domain.entity.Motorcycle
 import com.example.domain.repository.TariffRepository
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.BDDMockito.given
 import org.mockito.Mock
+import org.mockito.Mockito.mock
 import org.mockito.junit.MockitoJUnitRunner
 
 
 @RunWith(MockitoJUnitRunner::class)
 class TariffServiceTest {
-    @Mock
-    lateinit var tariffService: TariffService
+    private val tariffService = mock(TariffService::class.java)
 
     @Mock
     lateinit var tariffRepository: TariffRepository
@@ -25,7 +27,10 @@ class TariffServiceTest {
         val vehicle = Motorcycle("TYU78E", 150)
 
         //Act
-        tariffService.enterVehicle(entryVehicle, vehicle)
+        given(tariffService.enterVehicle(entryVehicle, vehicle)).willReturn(true)
+
+        //Assert
+        assertTrue(tariffService.enterVehicle(entryVehicle, vehicle))
     }
 
     @Test
@@ -53,5 +58,7 @@ class TariffServiceTest {
     fun get_allVehicles_successful() {
         //Act
         assert(tariffService.getVehicles() == tariffRepository.getVehicles())
+
+
     }
 }

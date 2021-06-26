@@ -22,18 +22,20 @@ class TariffService @Inject constructor(private val tariffRepository: TariffRepo
         }
     }
 
-    fun enterVehicle(entryDate: Long, vehicle: Vehicle) {
+    fun enterVehicle(entryDate: Long, vehicle: Vehicle): Boolean {
         val tariff = Tariff(entryDate, vehicle)
         if (checkAvailableVehicleSpace(vehicle)) {
             tariffRepository.enterVehicle(tariff)
+            return true
         } else {
             throw InvalidDataException("No hay campo disponible para el vehículo.")
         }
     }
 
-    fun takeOutVehicle(tariff: Tariff) {
+    fun takeOutVehicle(tariff: Tariff): Boolean {
         if (tariff.amount != null) {
             tariffRepository.takeOutVehicle(tariff)
+            return true
         } else {
             throw InvalidDataException("No se logro calcular el pago.")
         }

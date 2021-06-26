@@ -1,64 +1,37 @@
 package com.example.domain.service
 
-import com.example.domain.aggregate.Tariff
-import com.example.domain.entity.Car
 import com.example.domain.entity.Motorcycle
 import com.example.domain.repository.TariffRepository
 import org.junit.Assert.assertTrue
+import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.BDDMockito.given
+import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Mockito.mock
-import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.junit.MockitoJUnit
+import org.mockito.junit.MockitoRule
 
-
-@RunWith(MockitoJUnitRunner::class)
 class TariffServiceTest {
-    private val tariffService = mock(TariffService::class.java)
-
     @Mock
     lateinit var tariffRepository: TariffRepository
 
+    @get:Rule
+     val mockitoRule: MockitoRule = MockitoJUnit.rule()
+
+    @InjectMocks
+    lateinit var tariffService: TariffService
+
     @Test
-    fun enterVehicle_WithCorrectParameters_successful() {
-        //Arrange
+    fun testReadyForFlight() {
         val entryVehicle = 1624352400000 //June 22, 2021, 9:00 a.m
         val vehicle = Motorcycle("TYU78E", 150)
 
-        //Act
-        given(tariffService.enterVehicle(entryVehicle, vehicle)).willReturn(true)
+    //    val tariffService = TariffService(tariffRepository)
+     //   val planeMock = PowerMockito.mock(TariffService::class.java)
 
-        //Assert
+       // Mockito.`when`(planeMock.enterVehicle(entryVehicle, vehicle)).thenReturn(true)
+
         assertTrue(tariffService.enterVehicle(entryVehicle, vehicle))
+     //   assertTrue(planeMock.enterVehicle(entryVehicle, vehicle))
     }
 
-    @Test
-    fun takeOut_vehicleWithCorrectParameters_successful() {
-        //Arrange
-        val entryVehicle = 1624266000000 //June 21, 2021, 9:00 a.m
-        val vehicle = Car("TYU78E")
-        val motorcycle = Tariff(entryVehicle, vehicle)
-        motorcycle.vehicleDepartureDate = 1624366800000 //June 22, 2021, 1:00 p.m
-
-        //Act
-        tariffService.takeOutVehicle(motorcycle)
-    }
-
-    @Test
-    fun get_vehiclesByPlate_successful() {
-        //Arrange
-        val vehicle = Car("TYU78E")
-
-        //Act
-        tariffService.getVehiclesByPlate(vehicle.plate)
-    }
-
-    @Test
-    fun get_allVehicles_successful() {
-        //Act
-        assert(tariffService.getVehicles() == tariffRepository.getVehicles())
-
-
-    }
 }

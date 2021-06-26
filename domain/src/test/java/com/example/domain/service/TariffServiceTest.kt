@@ -3,7 +3,6 @@ package com.example.domain.service
 import com.example.domain.aggregate.Tariff
 import com.example.domain.entity.Car
 import com.example.domain.entity.Motorcycle
-import com.example.domain.repository.TariffRepository
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
@@ -11,30 +10,17 @@ import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
 class TariffServiceTest {
-
     @Mock
-    lateinit var tariffRepository: TariffRepository
+    lateinit var tariffService: TariffService
 
     @Test
-    fun enterMotorcycle_motorcycleWithCorrectParameters_successful() {
+    fun enterVehicle_WithCorrectParameters_successful() {
         //Arrange
         val entryVehicle = 1624352400000 //June 22, 2021, 9:00 a.m
         val vehicle = Motorcycle("TYU78E", 150)
-        val motorcycle = Tariff(entryVehicle, vehicle)
 
         //Act
-        tariffRepository.enterVehicle(motorcycle)
-    }
-
-    @Test
-    fun enterCar_carWithCorrectParameters_successful() {
-        //Arrange
-        val entryVehicle = 1624352400000 //June 22, 2021, 9:00 a.m
-        val vehicle = Car("MSK381")
-        val car = Tariff(entryVehicle, vehicle)
-
-        //Act
-        tariffRepository.enterVehicle(car)
+        tariffService.enterVehicle(entryVehicle, vehicle)
     }
 
     @Test
@@ -46,6 +32,19 @@ class TariffServiceTest {
         motorcycle.departureDate = 1624366800000 //June 22, 2021, 1:00 p.m
 
         //Act
-        tariffRepository.takeOutVehicle(motorcycle)
+        tariffService.takeOutVehicle(motorcycle)
+    }
+    @Test
+    fun get_vehiclesByPlate_successful() {
+        //Arrange
+        val vehicle = Car("TYU78E")
+
+        //Act
+        tariffService.getVehiclesByPlate(vehicle.plate)
+    }
+    @Test
+    fun get_allVehicles_successful() {
+        //Act
+        assert(tariffService.getVehicles().isNullOrEmpty())
     }
 }

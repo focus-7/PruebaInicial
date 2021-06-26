@@ -74,6 +74,7 @@ dependencies {
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.mockito:mockito-core:3.3.3'
+    testImplementation 'org.mockito:mockito-inline:2.13.0'
 
 
     implementation "com.google.dagger:hilt-android:2.33-beta"

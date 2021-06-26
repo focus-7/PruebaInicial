@@ -3,6 +3,7 @@ package com.example.domain.service
 import com.example.domain.aggregate.Tariff
 import com.example.domain.entity.Car
 import com.example.domain.entity.Motorcycle
+import com.example.domain.repository.TariffRepository
 import org.junit.Assert.assertNotNull
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -16,6 +17,9 @@ import org.mockito.junit.MockitoJUnitRunner
 class TariffServiceTest {
     @Mock
     lateinit var tariffService: TariffService
+
+    @Mock
+    lateinit var tariffRepository: TariffRepository
 
     @Test
     fun enterVehicle_WithCorrectParameters_successful() {
@@ -51,20 +55,6 @@ class TariffServiceTest {
     @Test
     fun get_allVehicles_successful() {
         //Act
-        assert(tariffService.getVehicles().isNullOrEmpty())
-    }
-
-    @Test
-    fun testMockingFinalMethod() {
-        //Arrange
-        val entryVehicle = 1624352400000 //June 22, 2021, 9:00 a.m
-        val vehicle = Motorcycle("TYU78E", 150)
-
-        //Act
-        tariffService.enterVehicle(entryVehicle, vehicle)
-
-        val mock: TariffService = mock(TariffService::class.java)
-
-        assertNotNull(mock.getVehicles())
+        assert(tariffService.getVehicles() == tariffRepository.getVehicles())
     }
 }

@@ -95,6 +95,20 @@ class TariffTest {
     }
 
     @Test
+    fun tariff_createTariffOfLessThanOneHourWithCar() {
+        //Arrange
+        val entryVehicle = 1624266000000 //June 21, 2021, 9:00 a.m
+        val vehicle = Car("GER674")
+
+        //Act
+        val expected = Tariff(entryVehicle, vehicle)
+        expected.vehicleDepartureDate = 1624266060000 //June 21, 2021, 9:01 a.m
+
+        //Assert
+        assertEquals(1000.0, expected.amount)
+    }
+
+    @Test
     fun tariff_createTariffWithMotorcyclePlateInitACanEntryMonday() {
         //Arrange
         val entryVehicle = 1623661200000 //June 14, 2021, 9:00 a.m (Monday)
@@ -140,7 +154,7 @@ class TariffTest {
         //Arrange
         val date = Date(1624366800000) //June 22, 2021, 1:00 p.m
         val format = SimpleDateFormat("dd/MM/yyyy HH:mm a", Locale.getDefault())
-        val vehicle = Car("TYU78E")
+        val vehicle = Car("TYU789")
         val car = Tariff(1624352400000, vehicle)  //June 22, 2021, 9:00 a.m
 
         //Act

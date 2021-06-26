@@ -43,7 +43,7 @@ class TakeOutVehicleDialogFragment : DialogFragment() {
 
     private fun eventsUI() = with(binding) {
         val c = Calendar.getInstance()
-        tariffOut.departureDate = c.timeInMillis
+        tariffOut.vehicleDepartureDate = c.timeInMillis
 
         plate.append(" " + tariffOut.vehicle.plate)
         entryDate.append(" " + tariffOut.getEntryDateString())

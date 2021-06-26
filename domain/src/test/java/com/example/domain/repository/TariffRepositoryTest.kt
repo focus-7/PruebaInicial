@@ -3,7 +3,6 @@ package com.example.domain.repository
 import com.example.domain.aggregate.Tariff
 import com.example.domain.entity.Car
 import com.example.domain.entity.Motorcycle
-import com.example.domain.repository.TariffRepository
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
@@ -43,7 +42,7 @@ class TariffRepositoryTest {
         val entryVehicle = 1624266000000 //June 21, 2021, 9:00 a.m
         val vehicle = Car("TYU78E")
         val motorcycle = Tariff(entryVehicle, vehicle)
-        motorcycle.departureDate = 1624366800000 //June 22, 2021, 1:00 p.m
+        motorcycle.vehicleDepartureDate = 1624366800000 //June 22, 2021, 1:00 p.m
 
         //Act
         tariffRepository.takeOutVehicle(motorcycle)

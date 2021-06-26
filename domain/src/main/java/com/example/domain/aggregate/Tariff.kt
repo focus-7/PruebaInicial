@@ -19,7 +19,7 @@ class Tariff(var entryDate: Long, vehicle: Vehicle) : Serializable {
         private set
     var amount: Double? = null
         private set
-    var departureDate: Long = 0
+    var vehicleDepartureDate: Long = 0
         set(value) {
             field = value
             calculateTariff()
@@ -34,7 +34,7 @@ class Tariff(var entryDate: Long, vehicle: Vehicle) : Serializable {
     }
 
     private fun calculateTariff() {
-        var hours = ((departureDate - vehicleEntryDate) / MILLS_HOUR).toInt()
+        var hours = ((vehicleDepartureDate - vehicleEntryDate) / MILLS_HOUR).toInt()
         if (hours == 0) hours = 1
         amount = when (vehicle) {
             is Car -> (vehicle as Car).calculatePaymentCar(hours)
@@ -45,6 +45,6 @@ class Tariff(var entryDate: Long, vehicle: Vehicle) : Serializable {
 
     fun getEntryDateString() = vehicleEntryDate.convertLongToTime()
 
-    fun getDepartureDateString() = departureDate.convertLongToTime()
+    fun getDepartureDateString() = vehicleDepartureDate.convertLongToTime()
 
 }

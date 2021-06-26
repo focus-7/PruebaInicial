@@ -42,7 +42,7 @@ class TariffTest {
 
         //Act
         val expected = Tariff(entryVehicle, vehicle)
-        expected.departureDate = 1624366800000 //June 22, 2021, 1:00 p.m
+        expected.vehicleDepartureDate = 1624366800000 //June 22, 2021, 1:00 p.m
 
         //Assert
         assertEquals(12000.0, expected.amount)
@@ -56,7 +56,7 @@ class TariffTest {
 
         //Act
         val expected = Tariff(entryVehicle, vehicle)
-        expected.departureDate = 1624305600000 //June 21, 2021, 8:00 p.m
+        expected.vehicleDepartureDate = 1624305600000 //June 21, 2021, 8:00 p.m
 
         //Assert
         assertEquals(6000.0, expected.amount)
@@ -70,7 +70,7 @@ class TariffTest {
 
         //Act
         val expected = Tariff(entryVehicle, vehicle)
-        expected.departureDate = 1624305600000 //June 21, 2021, 8:00 p.m
+        expected.vehicleDepartureDate = 1624305600000 //June 21, 2021, 8:00 p.m
 
         //Assert
         assertEquals(4000.0, expected.amount)
@@ -92,7 +92,7 @@ class TariffTest {
     }
 
     @Test
-    fun receipt_createReceiptWithMotorcyclePlateInitACanEntryMonday() {
+    fun tariff_createTariffWithMotorcyclePlateInitACanEntryMonday() {
         //Arrange
         val entryVehicle = 1623661200000 //June 14, 2021, 9:00 a.m (Monday)
         val vehicle = Motorcycle("AER67E", 120)
@@ -105,7 +105,7 @@ class TariffTest {
     }
 
     @Test
-    fun receipt_createReceiptWithMotorcyclePlateInitACanEntrySunday() {
+    fun tariff_createTariffWithMotorcyclePlateInitACanEntrySunday() {
         //Arrange
         val entryVehicle = 1624179600000 //June 20, 2021, 9:00 a.m (Sunday)
         val vehicle = Motorcycle("AER67E", 120)
@@ -115,5 +115,32 @@ class TariffTest {
 
         //Assert
         assertNotNull(expected)
+    }
+
+    @Test
+    fun convert_motorcycleEntryDateString_successful() {
+        //Arrange
+        val vehicle = Motorcycle("TYU78E", 150)
+        val motorcycle = Tariff(1624352400000, vehicle)
+
+        //Act
+        val expected = motorcycle.getEntryDateString()
+
+        //Assert
+        assertEquals("22/06/2021 04:00 a.m.", expected)
+    }
+
+    @Test
+    fun convert_carDepartureDateString_successful() {
+        //Arrange
+        val vehicle = Car("TYU78E")
+        val car = Tariff(1624352400000, vehicle)
+        car.vehicleDepartureDate = 1624366800000 //June 22, 2021, 1:00 p.m
+
+        //Act
+        val expected = car.getDepartureDateString()
+
+        //Assert
+        assertEquals("22/06/2021 08:00 a.m.", expected)
     }
 }

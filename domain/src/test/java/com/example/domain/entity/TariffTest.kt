@@ -12,7 +12,7 @@ import java.util.*
 class TariffTest {
 
     @Test
-    fun receipt_createTariffWithMotorcycle() {
+    fun tariff_createTariffWithMotorcycle() {
         //Arrange
         val entryVehicle = 1624266000000 //June 21, 2021, 9:00 a.m
         val vehicle = Motorcycle("GER67E", 120)

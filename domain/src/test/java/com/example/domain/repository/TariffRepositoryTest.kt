@@ -42,7 +42,7 @@ class TariffRepositoryTest {
         val entryVehicle = 1624266000000 //June 21, 2021, 9:00 a.m
         val vehicle = Car("TYU78E")
         val motorcycle = Tariff(entryVehicle, vehicle)
-        motorcycle.vehicleDepartureDate = 1624366800000 //June 22, 2021, 1:00 p.m
+        motorcycle.vehicleDepartureDate = 1624302000000 //June 22, 2021, 7:00 p.m
 
         //Act
         tariffRepository.takeOutVehicle(motorcycle)

@@ -2,9 +2,12 @@ package com.example.domain.entity
 
 import com.example.domain.aggregate.Tariff
 import com.example.domain.exception.InvalidDataException
-import org.junit.Assert.*
-
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Test
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 class TariffTest {
 
@@ -120,27 +123,31 @@ class TariffTest {
     @Test
     fun convert_motorcycleEntryDateString_successful() {
         //Arrange
+        val date = Date(1624352400000)
+        val format = SimpleDateFormat("dd/MM/yyyy HH:mm a", Locale.getDefault())
         val vehicle = Motorcycle("TYU78E", 150)
-        val motorcycle = Tariff(1624352400000, vehicle)
+        val motorcycle = Tariff(date.time, vehicle)
 
         //Act
         val expected = motorcycle.getEntryDateString()
 
         //Assert
-        assertEquals("22/06/2021 04:00 a.m.", expected)
+        assertEquals(format.format(date), expected)
     }
 
     @Test
     fun convert_carDepartureDateString_successful() {
         //Arrange
+        val date = Date(1624366800000)
+        val format = SimpleDateFormat("dd/MM/yyyy HH:mm a", Locale.getDefault())
         val vehicle = Car("TYU78E")
         val car = Tariff(1624352400000, vehicle)
-        car.vehicleDepartureDate = 1624366800000 //June 22, 2021, 1:00 p.m
 
         //Act
+        car.vehicleDepartureDate = date.time //June 22, 2021, 1:00 p.m
         val expected = car.getDepartureDateString()
 
         //Assert
-        assertEquals("22/06/2021 08:00 a.m.", expected)
+        assertEquals(format.format(date), expected)
     }
 }

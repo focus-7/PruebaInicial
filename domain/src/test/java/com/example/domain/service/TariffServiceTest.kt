@@ -3,7 +3,9 @@ package com.example.domain.service
 import com.example.domain.aggregate.Tariff
 import com.example.domain.entity.Car
 import com.example.domain.entity.Motorcycle
+import com.example.domain.exception.InvalidDataException
 import com.example.domain.repository.TariffRepository
+import org.junit.Assert
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -24,7 +26,7 @@ class TariffServiceTest {
     lateinit var tariffService: TariffService
 
     @Test
-    fun enterVehicle_WithCorrectParameters_successful() {
+    fun enterVehicle_withCorrectParameters_successful() {
         //Arrange
         val entryVehicle = 1624352400000 //June 22, 2021, 9:00 a.m
         val vehicle = Motorcycle("TYU78E", 150)
@@ -38,13 +40,29 @@ class TariffServiceTest {
         //Arrange
         val entryVehicle = 1624266000000 //June 21, 2021, 9:00 a.m
         val vehicle = Car("TYU78E")
-        val motorcycle = Tariff(entryVehicle, vehicle)
+        val car = Tariff(entryVehicle, vehicle)
 
         //Act
-        motorcycle.vehicleDepartureDate = 1624366800000 //June 22, 2021, 1:00 p.m
+        car.vehicleDepartureDate = 1624366800000 //June 22, 2021, 1:00 p.m
 
         //Assert
-        assertTrue(tariffService.takeOutVehicle(motorcycle))
+        assertTrue(tariffService.takeOutVehicle(car))
+    }
+
+    @Test
+    fun takeOut_vehicleWithNullParameters_failure() {
+        //Arrange
+        val entryVehicle = 1624266000000 //June 21, 2021, 9:00 a.m
+        val vehicle = Car("TYU78E")
+        val car = Tariff(entryVehicle, vehicle)
+
+        try {
+            //Act
+            tariffService.takeOutVehicle(car)
+        } catch (ex: InvalidDataException) {
+            //Assert
+            Assert.assertEquals("No se logro calcular el pago.", ex.message)
+        }
     }
 
     @Test

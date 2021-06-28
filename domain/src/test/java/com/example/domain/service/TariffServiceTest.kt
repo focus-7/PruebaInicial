@@ -52,6 +52,23 @@ class TariffServiceTest {
     }
 
     @Test
+    fun enterVehicle_noAvailableSpaceForCar_successful() {
+        //Arrange
+        val entryVehicle = 1624352400000 //June 22, 2021, 9:00 a.m
+        val vehicle = Car("TYU786")
+
+        `when`(tariffRepository.getQuantityOfVehicles(1)).thenReturn(21)
+
+        try {
+            //Act
+            tariffService.enterVehicle(entryVehicle, vehicle)
+        } catch (ex: InvalidDataException) {
+            //Assert
+            assertEquals("No hay campo disponible para el vehículo.", ex.message)
+        }
+    }
+
+    @Test
     fun takeOut_vehicleWithCorrectParameters_successful() {
         //Arrange
         val entryVehicle = 1624266000000 //June 21, 2021, 9:00 a.m

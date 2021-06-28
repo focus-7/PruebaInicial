@@ -108,6 +108,19 @@ class TariffTest {
         assertEquals(1000.0, expected.amount)
     }
 
+    @Test
+    fun tariff_createTariffOfLessThanOneHourWithMotorcycle() {
+        //Arrange
+        val entryVehicle = 1624266000000 //June 21, 2021, 9:00 a.m
+        val vehicle = Motorcycle("GER67A", 150)
+
+        //Act
+        val expected = Tariff(entryVehicle, vehicle)
+        expected.vehicleDepartureDate = 1624266060000 //June 21, 2021, 9:01 a.m
+
+        //Assert
+        assertEquals(500.0, expected.amount)
+    }
 
     @Test
     fun tariff_createTariffWithMotorcyclePlateInitACanEntryMonday() {

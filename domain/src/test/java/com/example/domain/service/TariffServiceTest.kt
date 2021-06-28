@@ -5,13 +5,12 @@ import com.example.domain.entity.Car
 import com.example.domain.entity.Motorcycle
 import com.example.domain.exception.InvalidDataException
 import com.example.domain.repository.TariffRepository
-import org.junit.Assert
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
+import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
 
@@ -33,6 +32,23 @@ class TariffServiceTest {
 
         //Assert
         assertTrue(tariffService.enterVehicle(entryVehicle, vehicle))
+    }
+
+    @Test
+    fun enterVehicle_noAvailableSpaceForMotorcycle_successful() {
+        //Arrange
+        val entryVehicle = 1624352400000 //June 22, 2021, 9:00 a.m
+        val vehicle = Motorcycle("TYU78E", 150)
+
+        `when`(tariffRepository.getQuantityOfVehicles(2)).thenReturn(11)
+
+        try {
+            //Act
+            tariffService.enterVehicle(entryVehicle, vehicle)
+        } catch (ex: InvalidDataException) {
+            //Assert
+            assertEquals("No hay campo disponible para el vehículo.", ex.message)
+        }
     }
 
     @Test
@@ -61,7 +77,7 @@ class TariffServiceTest {
             tariffService.takeOutVehicle(car)
         } catch (ex: InvalidDataException) {
             //Assert
-            Assert.assertEquals("No se logro calcular el pago.", ex.message)
+            assertEquals("No se logro calcular el pago.", ex.message)
         }
     }
 

@@ -11,7 +11,7 @@
 
         <variable
             name="tariff"
-            type="com.example.domain.aggregate.Tariff" />
+            type="com.ceiba.domain.aggregate.Tariff" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

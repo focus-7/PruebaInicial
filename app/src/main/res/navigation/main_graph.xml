@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.pruebainicial.fragments.MainFragment"
+        android:name="com.ceiba.pruebainicial.fragments.VehicleListingFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main">
+        tools:layout="@layout/fragment_list_vehicles">
         <action
             android:id="@+id/action_mainFragment_to_vehicleDialog"
             app:destination="@id/vehicleDialog" />
@@ -19,12 +19,12 @@
     </fragment>
     <dialog
         android:id="@+id/vehicleDialog"
-        android:name="com.example.pruebainicial.fragments.EnterVehicleDialogFragment"
+        android:name="com.ceiba.pruebainicial.fragments.EnterVehicleDialogFragment"
         android:label="VehicleDialog"
         tools:layout="@layout/dialog_add_vehicle" />
     <dialog
         android:id="@+id/takeOutVehicleDialogFragment"
-        android:name="com.example.pruebainicial.fragments.TakeOutVehicleDialogFragment"
+        android:name="com.ceiba.pruebainicial.fragments.TakeOutVehicleDialogFragment"
         android:label="dialog_take_out_vehicle"
         tools:layout="@layout/dialog_take_out_vehicle" />
 </navigation>

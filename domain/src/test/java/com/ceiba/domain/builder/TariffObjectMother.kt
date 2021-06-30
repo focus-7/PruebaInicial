@@ -3,6 +3,8 @@ package com.ceiba.domain.builder
 import com.ceiba.domain.aggregate.Tariff
 import com.ceiba.domain.model.Car
 import com.ceiba.domain.model.Motorcycle
+import java.text.SimpleDateFormat
+import java.util.*
 
 class TariffObjectMother {
     companion object {
@@ -24,7 +26,7 @@ class TariffObjectMother {
                 .buildMotorcycle()
         }
 
-        fun vehicleTypeMotorcycleWithPlateA(): Motorcycle {
+        private fun vehicleTypeMotorcycleWithPlateA(): Motorcycle {
             return VehicleBuilder()
                 .withPlate("ATY38E")
                 .buildMotorcycle()
@@ -36,12 +38,12 @@ class TariffObjectMother {
         }
 
         fun tariffOfMotorcycleCC150(): Tariff {
-            return  TariffBuilder()
+            return TariffBuilder()
                 .build(vehicleTypeMotorcycle150())
         }
 
         fun tariffOfMotorcycleCC750(): Tariff {
-            return  TariffBuilder()
+            return TariffBuilder()
                 .build(vehicleTypeMotorcycle750())
         }
 
@@ -73,6 +75,12 @@ class TariffObjectMother {
 
         fun departureVehicleInJuneAtEightPm(tariff: Tariff) {
             tariff.vehicleDepartureDate = 1624305600000 //June 21, 2021, 8:00 p.m
+        }
+
+        fun getStringDepartureDateVehicle(date: Long): String {
+            val format = SimpleDateFormat("dd/MM/yyyy HH:mm a", Locale.getDefault())
+            val formatDate = Date(date)
+            return format.format(formatDate)
         }
     }
 }

@@ -1,13 +1,10 @@
 package com.ceiba.domain.model
 
-import com.ceiba.domain.aggregate.Tariff
 import com.ceiba.domain.builder.TariffObjectMother
 import com.ceiba.domain.exception.InvalidDataException
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 class TariffTest {
@@ -108,48 +105,42 @@ class TariffTest {
         assertNotNull(expected)
     }
 
- /*   @Test
+    @Test
     fun tariff_vehicleDepartureDateWithCar_successful() {
         //Arrange
-        val date = Date(1624366800000) //June 22, 2021, 1:00 p.m
-        val vehicle = Car("TYU789")
-        val car = Tariff(1624352400000, vehicle)  //June 22, 2021, 9:00 a.m
+        val car = TariffObjectMother.tariffOfCar()
 
         //Act
-        car.vehicleDepartureDate = date.time
+        TariffObjectMother.departureVehicleInJuneAtOnePm(car)
 
         //Assert
         assertNotNull(car.vehicleDepartureDate)
-    }*/
+    }
 
     @Test
     fun convert_motorcycleEntryDateString_successful() {
         //Arrange
-        val date = Date(1624352400000) //June 22, 2021, 9:00 a.m
-        val format = SimpleDateFormat("dd/MM/yyyy HH:mm a", Locale.getDefault())
-        val vehicle = Motorcycle("TYU78E", 150)
-        val motorcycle = Tariff(date.time, vehicle)
+        val motorcycle = TariffObjectMother.tariffOfMotorcycleCC150()
+        val actual = TariffObjectMother.getStringDepartureDateVehicle(motorcycle.vehicleEntryDate)
 
         //Act
         val expected = motorcycle.getEntryDateString()
 
         //Assert
-        assertEquals(format.format(date), expected)
+        assertEquals(expected, actual)
     }
 
     @Test
     fun convert_carDepartureDateString_successful() {
         //Arrange
-        val date = Date(1624366800000) //June 22, 2021, 1:00 p.m
-        val format = SimpleDateFormat("dd/MM/yyyy HH:mm a", Locale.getDefault())
-        val vehicle = Car("TYU789")
-        val car = Tariff(1624352400000, vehicle)  //June 22, 2021, 9:00 a.m
+        val car = TariffObjectMother.tariffOfCar()
+        TariffObjectMother.departureVehicleInJuneAtOnePm(car)
+        val actual = TariffObjectMother.getStringDepartureDateVehicle(car.vehicleDepartureDate)
 
         //Act
-        car.vehicleDepartureDate = date.time
         val expected = car.getDepartureDateString()
 
         //Assert
-        assertEquals(format.format(date), expected)
+        assertEquals(expected, actual)
     }
 }

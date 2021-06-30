@@ -4,7 +4,7 @@ import com.ceiba.domain.valueobject.VehicleType
 import java.io.Serializable
 
 
-abstract class Vehicle(var plate: String, val vehicleType: VehicleType) : Serializable {
+abstract class Vehicle(var plate: String, val vehicleType: Int) : Serializable {
     companion object {
         const val PLATE_INITIAL_LETTER = 'A'
     }

@@ -1,6 +1,7 @@
 package com.ceiba.domain.model
 
 import com.ceiba.domain.aggregate.Tariff
+import com.ceiba.domain.builder.TariffObjectMother
 import com.ceiba.domain.exception.InvalidDataException
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -14,11 +15,7 @@ class TariffTest {
     @Test
     fun tariff_createTariffWithMotorcycle() {
         //Arrange
-        val entryVehicle = 1624266000000 //June 21, 2021, 9:00 a.m
-        val vehicle = Motorcycle("GER67E", 120)
-
-        //Act
-        val expected = Tariff(entryVehicle, vehicle)
+        val expected = TariffObjectMother.tariffOfMotorcycleCC150()
 
         //Assert
         assertNotNull(expected)
@@ -27,11 +24,7 @@ class TariffTest {
     @Test
     fun tariff_createTariffWithCar() {
         //Arrange
-        val entryVehicle = 1624266000000 //June 21, 2021, 9:00 a.m
-        val vehicle = Car("MSK456")
-
-        //Act
-        val expected = Tariff(entryVehicle, vehicle)
+        val expected = TariffObjectMother.tariffOfCar()
 
         //Assert
         assertNotNull(expected)
@@ -40,12 +33,10 @@ class TariffTest {
     @Test
     fun tariff_createTariffWithCarOut() {
         //Arrange
-        val entryVehicle = 1624266000000 //June 21, 2021, 9:00 a.m
-        val vehicle = Car("MSK456")
+        val expected = TariffObjectMother.tariffOfCar()
 
         //Act
-        val expected = Tariff(entryVehicle, vehicle)
-        expected.vehicleDepartureDate = 1624366800000 //June 22, 2021, 1:00 p.m
+        TariffObjectMother.departureVehicleInJuneAtOnePm(expected)
 
         //Assert
         assertEquals(12000.0, expected.amount)
@@ -54,12 +45,10 @@ class TariffTest {
     @Test
     fun tariff_createTariffWithMotorcycleOutCylinder750() {
         //Arrange
-        val entryVehicle = 1624266000000 //June 21, 2021, 9:00 a.m
-        val vehicle = Motorcycle("GER67E", 750)
+        val expected = TariffObjectMother.tariffOfMotorcycleCC750()
 
         //Act
-        val expected = Tariff(entryVehicle, vehicle)
-        expected.vehicleDepartureDate = 1624305600000 //June 21, 2021, 8:00 p.m
+        TariffObjectMother.departureVehicleInJuneAtEightPm(expected)
 
         //Assert
         assertEquals(6000.0, expected.amount)
@@ -68,26 +57,21 @@ class TariffTest {
     @Test
     fun tariff_createTariffWithMotorcycleOutCylinder150() {
         //Arrange
-        val entryVehicle = 1624266000000 //June 21, 2021, 9:00 a.m
-        val vehicle = Motorcycle("GER67E", 150)
+        val expected = TariffObjectMother.tariffOfMotorcycleCC150()
 
         //Act
-        val expected = Tariff(entryVehicle, vehicle)
-        expected.vehicleDepartureDate = 1624305600000 //June 21, 2021, 8:00 p.m
+        TariffObjectMother.departureVehicleInJuneAtEightPm(expected)
 
         //Assert
         assertEquals(4000.0, expected.amount)
     }
 
+
     @Test
     fun tariff_createTariffWithMotorcyclePlateInitANotCanEntry() {
-        //Arrange
-        val entryVehicle = 1624352400000 //June 22, 2021, 9:00 a.m
-        val vehicle = Motorcycle("AER67E", 150)
-
         try {
-            //Act
-            Tariff(entryVehicle, vehicle)
+            //Arrange
+            TariffObjectMother.tariffOfMotorcycleOnTuesdayWithPlateA()
         } catch (ex: InvalidDataException) {
             //Assert
             assertEquals("Vehiculo no autorizado a ingresar", ex.message)
@@ -97,12 +81,10 @@ class TariffTest {
     @Test
     fun tariff_createTariffOfLessThanOneHourWithCar() {
         //Arrange
-        val entryVehicle = 1624266000000 //June 21, 2021, 9:00 a.m
-        val vehicle = Car("GER674")
+        val expected = TariffObjectMother.tariffOfCar()
 
         //Act
-        val expected = Tariff(entryVehicle, vehicle)
-        expected.vehicleDepartureDate = 1624266060000 //June 21, 2021, 9:01 a.m
+        TariffObjectMother.departureVehicleInJune901am(expected)
 
         //Assert
         assertEquals(1000.0, expected.amount)
@@ -111,11 +93,7 @@ class TariffTest {
     @Test
     fun tariff_createTariffWithMotorcyclePlateInitACanEntryMonday() {
         //Arrange
-        val entryVehicle = 1623661200000 //June 14, 2021, 9:00 a.m (Monday)
-        val vehicle = Motorcycle("AER67E", 120)
-
-        //Act
-        val expected = Tariff(entryVehicle, vehicle)
+        val expected = TariffObjectMother.tariffOfMotorcycleOnMondayWithPlateA()
 
         //Assert
         assertNotNull(expected)
@@ -124,17 +102,13 @@ class TariffTest {
     @Test
     fun tariff_createTariffWithMotorcyclePlateInitACanEntrySunday() {
         //Arrange
-        val entryVehicle = 1624179600000 //June 20, 2021, 9:00 a.m (Sunday)
-        val vehicle = Motorcycle("AER67E", 120)
-
-        //Act
-        val expected = Tariff(entryVehicle, vehicle)
+        val expected = TariffObjectMother.tariffOfMotorcycleOnSundayWithPlateA()
 
         //Assert
         assertNotNull(expected)
     }
 
-    @Test
+ /*   @Test
     fun tariff_vehicleDepartureDateWithCar_successful() {
         //Arrange
         val date = Date(1624366800000) //June 22, 2021, 1:00 p.m
@@ -146,7 +120,7 @@ class TariffTest {
 
         //Assert
         assertNotNull(car.vehicleDepartureDate)
-    }
+    }*/
 
     @Test
     fun convert_motorcycleEntryDateString_successful() {

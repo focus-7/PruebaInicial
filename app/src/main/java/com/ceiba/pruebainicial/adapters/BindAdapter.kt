@@ -19,7 +19,7 @@ fun bindIsVisible(view: View, isGone: Boolean) {
 
 @BindingAdapter("changeImageVehicle")
 fun changeImageVehicle(imgView: AppCompatImageView, vehicle: Vehicle) {
-    vehicle?.also {
+    vehicle.also {
         val img = when (vehicle) {
             is Car -> R.drawable.ic_baseline_directions_car_24
             else -> R.drawable.ic_baseline_sports_motorsports_24

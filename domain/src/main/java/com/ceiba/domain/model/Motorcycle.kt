@@ -5,7 +5,7 @@ import com.ceiba.domain.valueobject.VehicleType
 
 class Motorcycle(
     plate: String, var cylinderCapacity: Int,
-) : Vehicle(plate, VehicleType.MOTORCYCLE) {
+) : Vehicle(plate, VehicleType.MOTORCYCLE.type) {
     companion object {
         const val MAX_CYLINDER_CAPACITY = 500
     }
@@ -15,8 +15,8 @@ class Motorcycle(
     }
 
     fun getAdditionalAmountMotorcycle(): Double {
-        if (cylinderCapacityGreaterThan500())
-            return Prices.MOTORCYCLE.additionalAmount
-        return 0.0
+        return Prices.MOTORCYCLE.additionalAmount.takeIf {
+            cylinderCapacityGreaterThan500()
+        } ?: 0.0
     }
 }

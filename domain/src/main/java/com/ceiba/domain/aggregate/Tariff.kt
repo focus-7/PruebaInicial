@@ -39,7 +39,7 @@ class Tariff(var entryDate: Long, vehicle: Vehicle) : Serializable {
         if (vehicle.plateInitWithA() && day != Calendar.SUNDAY && day != Calendar.MONDAY)
             throw InvalidDataException("Vehiculo no autorizado a ingresar")
         else
-            vehicleType = vehicle.vehicleType.type
+            vehicleType = vehicle.vehicleType
     }
 
     private fun calculateVehicleTariff() {

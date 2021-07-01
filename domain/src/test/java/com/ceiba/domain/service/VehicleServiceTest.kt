@@ -5,13 +5,16 @@ import com.ceiba.domain.exception.InvalidDataException
 import com.ceiba.domain.repository.ParkingRepository
 import com.ceiba.domain.repository.VehicleRepository
 import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
+import org.mockito.MockitoAnnotations.initMocks
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
+
 
 class VehicleServiceTest {
     @Mock
@@ -24,13 +27,17 @@ class VehicleServiceTest {
     val mockitoRule: MockitoRule = MockitoJUnit.rule()
 
     @InjectMocks
-    lateinit var vehicleService: VehicleService
-
-    @InjectMocks
     lateinit var parkingService: ParkingService
 
-    private val tariffPerCar = TariffPerVehicleCarService()
-    private val tariffPerMotorcycle = TariffPerVehicleMotorcycleService()
+    private lateinit var vehicleService: VehicleService
+    @Before
+    fun setup() {
+        initMocks(this)
+        vehicleService = VehicleService(vehicleRepository, parkingService)
+    }
+
+    private val tariffPerCar = TariffCarService()
+    private val tariffPerMotorcycle = TariffMotorcycleService()
 
     @Test
     fun enterVehicle_withCorrectParameters_successful() {
@@ -38,18 +45,18 @@ class VehicleServiceTest {
         val tariffMotorcycle = TariffObjectMother.tariffOfMotorcycleCC150()
 
         //Assert
-        assertTrue(vehicleService.enterVehicle(tariffMotorcycle))
+        assertTrue(vehicleService.enterMotorcycle(tariffMotorcycle))
     }
 
     @Test
     fun enterVehicle_noAvailableSpaceForMotorcycle_successful() {
         //Arrange
         val tariffMotorcycle = TariffObjectMother.tariffOfMotorcycleCC150()
-        `when`(parkingRepository.getQuantityOfVehicles(2)).thenReturn(11)
+        `when`(parkingRepository.getQuantityOfMotorcycles()).thenReturn(11)
 
         try {
             //Act
-            vehicleService.enterVehicle(tariffMotorcycle)
+            vehicleService.enterMotorcycle(tariffMotorcycle)
         } catch (ex: InvalidDataException) {
             //Assert
             assertEquals("No hay campo disponible para el vehículo.", ex.message)
@@ -60,11 +67,11 @@ class VehicleServiceTest {
     fun enterVehicle_noAvailableSpaceForCar_successful() {
         //Arrange
         val tariffCar = TariffObjectMother.tariffOfCar()
-        `when`(parkingRepository.getQuantityOfVehicles(1)).thenReturn(21)
+        `when`(parkingRepository.getQuantityOfCars()).thenReturn(21)
 
         try {
             //Act
-            vehicleService.enterVehicle(tariffCar)
+            vehicleService.enterCar(tariffCar)
         } catch (ex: InvalidDataException) {
             //Assert
             assertEquals("No hay campo disponible para el vehículo.", ex.message)

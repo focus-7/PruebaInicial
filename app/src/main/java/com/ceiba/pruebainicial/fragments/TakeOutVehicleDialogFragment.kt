@@ -8,11 +8,8 @@ import android.view.Window
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.ceiba.application.service.TariffVehicleApplicationService
 import com.ceiba.domain.aggregate.Tariff
-import com.ceiba.domain.service.TariffPerVehicle
-import com.ceiba.domain.service.TariffPerVehicleCarService
-import com.ceiba.domain.service.TariffPerVehicleMotorcycleService
-import com.ceiba.domain.valueobject.VehicleType
 import com.ceiba.pruebainicial.R
 import com.ceiba.pruebainicial.databinding.DialogTakeOutVehicleBinding
 import com.ceiba.pruebainicial.utils.Resource
@@ -24,16 +21,14 @@ import java.util.*
 
 @AndroidEntryPoint
 class TakeOutVehicleDialogFragment : DialogFragment() {
-    private lateinit var binding: DialogTakeOutVehicleBinding
     private val viewModel: TariffViewModel by viewModels()
+    private lateinit var binding: DialogTakeOutVehicleBinding
     private lateinit var tariffOut: Tariff
-    private lateinit var tariffPerVehicleCar: TariffPerVehicle
-    private lateinit var tariffPerVehicleMotorcycle: TariffPerVehicle
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = DialogTakeOutVehicleBinding.inflate(inflater, container, false)
         dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -49,16 +44,12 @@ class TakeOutVehicleDialogFragment : DialogFragment() {
 
     private fun eventsUI() = with(binding) {
         val c = Calendar.getInstance()
+        val tariffVehicleApplicationService = TariffVehicleApplicationService()
 
-        if (tariffOut.vehicleType == VehicleType.CAR.type) {
-            tariffPerVehicleCar = TariffPerVehicleCarService()
-            tariffOut.calculateVehicleTariff(tariffPerVehicleCar, c.timeInMillis)
-        } else {
-            tariffPerVehicleMotorcycle = TariffPerVehicleMotorcycleService()
-            tariffOut.calculateVehicleTariff(tariffPerVehicleMotorcycle, c.timeInMillis)
-        }
+        tariffOut.vehicleDepartureDate = c.timeInMillis
 
-        plate.append(" " + tariffOut.vehicle.plate)
+        tariffVehicleApplicationService.calculateTariffVehicle(tariffOut)
+
         entryDate.append(" " + tariffOut.getEntryDateString())
         departureDate.append(" " + tariffOut.getDepartureDateString())
         payment.append(" $" + tariffOut.amount)
@@ -72,6 +63,7 @@ class TakeOutVehicleDialogFragment : DialogFragment() {
             saveData()
         }
     }
+
 
     private fun saveData() {
         viewModel.takeOutVehicle(tariffOut).observe(viewLifecycleOwner, { result ->

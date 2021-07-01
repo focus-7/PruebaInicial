@@ -1,8 +1,8 @@
 package com.ceiba.domain.repository
 
 import com.ceiba.domain.builder.TariffObjectMother
-import com.ceiba.domain.service.TariffPerVehicleCarService
-import com.ceiba.domain.service.TariffPerVehicleMotorcycleService
+import com.ceiba.domain.service.TariffCarService
+import com.ceiba.domain.service.TariffMotorcycleService
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
@@ -19,7 +19,7 @@ class VehicleRepositoryTest {
         val motorcycle = TariffObjectMother.tariffOfMotorcycleCC150()
 
         //Act
-        vehicleRepository.enterVehicle(motorcycle)
+        vehicleRepository.enterMotorcycle(motorcycle)
     }
 
     @Test
@@ -28,14 +28,14 @@ class VehicleRepositoryTest {
         val car = TariffObjectMother.tariffOfCar()
 
         //Act
-        vehicleRepository.enterVehicle(car)
+        vehicleRepository.enterCar(car)
     }
 
     @Test
     fun takeOutCar_WithCorrectParameters_successful() {
         //Arrange
         val tariffCar = TariffObjectMother.tariffOfCar()
-        val tariffPerCar = TariffPerVehicleCarService()
+        val tariffPerCar = TariffCarService()
         TariffObjectMother.departureVehicleInJuneAtOnePm(tariffCar)
         tariffCar.calculateVehicleTariff(tariffPerCar, tariffCar.vehicleDepartureDate)
 
@@ -47,7 +47,7 @@ class VehicleRepositoryTest {
     fun takeOutMotorcycle_WithCorrectParameters_successful() {
         //Arrange
         val tariffMotorcycle = TariffObjectMother.tariffOfMotorcycleCC150()
-        val tariffPerMotorcycle = TariffPerVehicleMotorcycleService()
+        val tariffPerMotorcycle = TariffMotorcycleService()
         TariffObjectMother.departureVehicleInJuneAtOnePm(tariffMotorcycle)
         tariffMotorcycle.calculateVehicleTariff(
             tariffPerMotorcycle,

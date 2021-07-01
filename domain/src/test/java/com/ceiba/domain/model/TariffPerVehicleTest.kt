@@ -2,16 +2,16 @@ package com.ceiba.domain.model
 
 import com.ceiba.domain.builder.TariffObjectMother
 import com.ceiba.domain.exception.InvalidDataException
-import com.ceiba.domain.service.TariffPerVehicleCarService
-import com.ceiba.domain.service.TariffPerVehicleMotorcycleService
+import com.ceiba.domain.service.TariffCarService
+import com.ceiba.domain.service.TariffMotorcycleService
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
 
 
 class TariffPerVehicleTest {
-    private val tariffPerCar = TariffPerVehicleCarService()
-    private val tariffPerMotorcycle = TariffPerVehicleMotorcycleService()
+    private val tariffPerCar = TariffCarService()
+    private val tariffPerMotorcycle = TariffMotorcycleService()
 
 
     @Test

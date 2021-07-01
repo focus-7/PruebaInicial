@@ -13,7 +13,11 @@ class VehicleRepositoryRoom @Inject constructor(private val parkingDao: ParkingD
         parkingDao.deleteTariff(tariff.vehicle.plate)
     }
 
-    override fun enterVehicle(tariff: Tariff) {
+    override fun enterCar(tariff: Tariff) {
+        parkingDao.insertTariff(tariff.asTariffEntity())
+    }
+
+    override fun enterMotorcycle(tariff: Tariff) {
         parkingDao.insertTariff(tariff.asTariffEntity())
     }
 

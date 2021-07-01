@@ -2,7 +2,7 @@ package com.ceiba.domain.service
 
 import com.ceiba.domain.valueobject.Prices
 
-class TariffPerVehicleCarService : TariffPerVehicle {
+class TariffCarService : TariffPerVehicle {
     override fun getHourPrice(): Double {
         return Prices.CAR.hour
     }

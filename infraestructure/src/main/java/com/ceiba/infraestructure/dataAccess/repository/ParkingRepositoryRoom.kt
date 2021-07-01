@@ -2,14 +2,18 @@ package com.ceiba.infraestructure.dataAccess.repository
 
 import com.ceiba.domain.aggregate.Tariff
 import com.ceiba.domain.repository.ParkingRepository
-import com.ceiba.infraestructure.dataAccess.dao.VehicleDao
 import com.ceiba.infraestructure.dataAccess.anticorruption.asVehicleList
+import com.ceiba.infraestructure.dataAccess.dao.VehicleDao
 import javax.inject.Inject
 
 class ParkingRepositoryRoom @Inject constructor(private val vehicleDao: VehicleDao) :
     ParkingRepository {
-    override fun getQuantityOfVehicles(typeVehicle: Int): Int {
-        return vehicleDao.getCountTypeOfVehicle(typeVehicle)
+    override fun getQuantityOfCars(): Int {
+        return vehicleDao.getCountCars()
+    }
+
+    override fun getQuantityOfMotorcycles(): Int {
+        return vehicleDao.getCountMotorcycles()
     }
 
     override fun searchVehicleByPlate(plate: String): List<Tariff> {

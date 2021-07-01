@@ -102,6 +102,7 @@ dependencies {
 
     //library
     implementation project(":domain")
+    implementation project(":application")
     implementation project(":infraestructure")
 
 

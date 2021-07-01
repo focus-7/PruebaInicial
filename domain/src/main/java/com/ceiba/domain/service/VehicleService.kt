@@ -6,16 +6,24 @@ import com.ceiba.domain.repository.VehicleRepository
 import javax.inject.Inject
 
 class VehicleService @Inject constructor(
-    private val vehicleRepository: VehicleRepository
+    private val vehicleRepository: VehicleRepository,
+    private val parkingService: ParkingService,
 ) {
-    fun enterVehicle(tariff: Tariff): Boolean {
-      /*  if (checkAvailableVehicleSpace(tariff)) {
-            vehicleRepository.enterVehicle(tariff)
-            return true
+    fun enterCar(tariff: Tariff): Boolean {
+        if (parkingService.checkAvailableSpaceForCars()) {
+            vehicleRepository.enterCar(tariff)
         } else {
             throw InvalidDataException("No hay campo disponible para el vehículo.")
-        }*/
-        vehicleRepository.enterVehicle(tariff)
+        }
+        return true
+    }
+
+    fun enterMotorcycle(tariff: Tariff): Boolean {
+        if (parkingService.checkAvailableSpaceForMotorcycles()) {
+            vehicleRepository.enterMotorcycle(tariff)
+        } else {
+            throw InvalidDataException("No hay campo disponible para el vehículo.")
+        }
         return true
     }
 

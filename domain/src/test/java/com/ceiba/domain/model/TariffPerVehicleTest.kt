@@ -2,12 +2,17 @@ package com.ceiba.domain.model
 
 import com.ceiba.domain.builder.TariffObjectMother
 import com.ceiba.domain.exception.InvalidDataException
+import com.ceiba.domain.service.TariffPerVehicleCarService
+import com.ceiba.domain.service.TariffPerVehicleMotorcycleService
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
 
 
-class TariffTest {
+class TariffPerVehicleTest {
+    private val tariffPerCar = TariffPerVehicleCarService()
+    private val tariffPerMotorcycle = TariffPerVehicleMotorcycleService()
+
 
     @Test
     fun tariff_createTariffWithMotorcycle() {
@@ -30,37 +35,49 @@ class TariffTest {
     @Test
     fun tariff_createTariffWithCarOut() {
         //Arrange
-        val expected = TariffObjectMother.tariffOfCar()
+        val tariffCar = TariffObjectMother.tariffOfCar()
+        val expected = 4000.0
+        TariffObjectMother.departureVehicleInJuneAtOnePm(tariffCar)
 
         //Act
-        TariffObjectMother.departureVehicleInJuneAtOnePm(expected)
+        tariffCar.calculateVehicleTariff(tariffPerCar, tariffCar.vehicleDepartureDate)
 
         //Assert
-        assertEquals(12000.0, expected.amount)
+        assertEquals(expected, tariffCar.amount)
     }
 
     @Test
     fun tariff_createTariffWithMotorcycleOutCylinder750() {
         //Arrange
-        val expected = TariffObjectMother.tariffOfMotorcycleCC750()
+        val tariffMotorcycle = TariffObjectMother.tariffOfMotorcycleCC750()
+        val expected = 4000.0
+        TariffObjectMother.departureVehicleInJuneAtEightPm(tariffMotorcycle)
 
         //Act
-        TariffObjectMother.departureVehicleInJuneAtEightPm(expected)
+        tariffMotorcycle.calculateVehicleTariff(
+            tariffPerMotorcycle,
+            tariffMotorcycle.vehicleDepartureDate
+        )
 
         //Assert
-        assertEquals(6000.0, expected.amount)
+        assertEquals(expected, tariffMotorcycle.amount)
     }
 
     @Test
     fun tariff_createTariffWithMotorcycleOutCylinder150() {
         //Arrange
-        val expected = TariffObjectMother.tariffOfMotorcycleCC150()
+        val tariffMotorcycle = TariffObjectMother.tariffOfMotorcycleCC150()
+        val expected = 4000.0
+        TariffObjectMother.departureVehicleInJuneAtFivePm(tariffMotorcycle)
 
         //Act
-        TariffObjectMother.departureVehicleInJuneAtEightPm(expected)
+        tariffMotorcycle.calculateVehicleTariff(
+            tariffPerMotorcycle,
+            tariffMotorcycle.vehicleDepartureDate
+        )
 
         //Assert
-        assertEquals(4000.0, expected.amount)
+        assertEquals(expected, tariffMotorcycle.amount)
     }
 
 
@@ -78,13 +95,15 @@ class TariffTest {
     @Test
     fun tariff_createTariffOfLessThanOneHourWithCar() {
         //Arrange
-        val expected = TariffObjectMother.tariffOfCar()
+        val tariffCar = TariffObjectMother.tariffOfCar()
+        val expected = 1000.0
+        TariffObjectMother.departureVehicleInJune901am(tariffCar)
 
         //Act
-        TariffObjectMother.departureVehicleInJune901am(expected)
+        tariffCar.calculateVehicleTariff(tariffPerCar, tariffCar.vehicleDepartureDate)
 
         //Assert
-        assertEquals(1000.0, expected.amount)
+        assertEquals(expected, tariffCar.amount)
     }
 
     @Test
@@ -108,13 +127,15 @@ class TariffTest {
     @Test
     fun tariff_vehicleDepartureDateWithCar_successful() {
         //Arrange
-        val car = TariffObjectMother.tariffOfCar()
+        val tariffCar = TariffObjectMother.tariffOfCar()
+        TariffObjectMother.departureVehicleInJuneAtOnePm(tariffCar)
+        val expected = 4000.0
 
         //Act
-        TariffObjectMother.departureVehicleInJuneAtOnePm(car)
+        tariffCar.calculateVehicleTariff(tariffPerCar, tariffCar.vehicleDepartureDate)
 
         //Assert
-        assertNotNull(car.vehicleDepartureDate)
+        assertEquals(expected, tariffCar.amount)
     }
 
     @Test

@@ -1,33 +1,22 @@
 package com.ceiba.domain.service
 
 import com.ceiba.domain.aggregate.Tariff
-import com.ceiba.domain.model.Vehicle
 import com.ceiba.domain.exception.InvalidDataException
-import com.ceiba.domain.repository.ParkingRepository
 import com.ceiba.domain.repository.VehicleRepository
-import com.ceiba.domain.valueobject.VehicleType
 import javax.inject.Inject
 
 class VehicleService @Inject constructor(
-    private val vehicleRepository: VehicleRepository,
-    private val parkingRepository: ParkingRepository
+    private val vehicleRepository: VehicleRepository
 ) {
-    fun enterVehicle(entryDate: Long, vehicle: Vehicle): Boolean {
-        val tariff = Tariff(entryDate, vehicle)
-        if (checkAvailableVehicleSpace(tariff)) {
+    fun enterVehicle(tariff: Tariff): Boolean {
+      /*  if (checkAvailableVehicleSpace(tariff)) {
             vehicleRepository.enterVehicle(tariff)
             return true
         } else {
             throw InvalidDataException("No hay campo disponible para el vehículo.")
-        }
-    }
-
-    private fun checkAvailableVehicleSpace(tariff: Tariff): Boolean {
-        return when (tariff.vehicleType) {
-            VehicleType.CAR.type -> (parkingRepository.getQuantityOfVehicles(tariff.vehicleType) < ParkingService.MAX_CANT_CAR)
-            VehicleType.MOTORCYCLE.type -> (parkingRepository.getQuantityOfVehicles(tariff.vehicleType) < ParkingService.MAX_CANT_MOTORCYCLE)
-            else -> throw InvalidDataException("No hay campo disponible para el vehículo.")
-        }
+        }*/
+        vehicleRepository.enterVehicle(tariff)
+        return true
     }
 
     fun takeOutVehicle(tariff: Tariff): Boolean {

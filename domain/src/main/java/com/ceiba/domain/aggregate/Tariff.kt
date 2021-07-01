@@ -1,12 +1,9 @@
 package com.ceiba.domain.aggregate
 
-import com.ceiba.domain.model.Motorcycle
-import com.ceiba.domain.model.Vehicle
 import com.ceiba.domain.exception.InvalidDataException
+import com.ceiba.domain.model.Vehicle
+import com.ceiba.domain.service.TariffPerVehicle
 import com.ceiba.domain.util.ConvertDate.convertLongToTime
-import com.ceiba.domain.util.VehicleGeneric
-import com.ceiba.domain.valueobject.Prices
-import com.ceiba.domain.valueobject.VehicleType
 import java.io.Serializable
 import java.util.*
 
@@ -27,10 +24,6 @@ class Tariff(var entryDate: Long, vehicle: Vehicle) : Serializable {
     var amount: Double? = null
         private set
     var vehicleDepartureDate: Long = 0
-        set(value) {
-            field = value
-            calculateVehicleTariff()
-        }
 
     init {
         val calendar = Calendar.getInstance()
@@ -42,26 +35,19 @@ class Tariff(var entryDate: Long, vehicle: Vehicle) : Serializable {
             vehicleType = vehicle.vehicleType
     }
 
-    private fun calculateVehicleTariff() {
-        var hours = ((vehicleDepartureDate - vehicleEntryDate) / MILLS_HOUR).toInt()
+
+    fun calculateVehicleTariff(tariffPerVehicle: TariffPerVehicle, departureDate: Long) {
+        vehicleDepartureDate = departureDate
+
+        var hours =
+            ((vehicleDepartureDate - vehicleEntryDate) / MILLS_HOUR).toInt()
         if (hours == 0) hours = 1
 
-        amount = when (vehicleType) {
-            VehicleType.CAR.type -> calculateVehiclePayment(
-                Prices.CAR.hour,
-                Prices.CAR.day,
-                hours
-            )
-            VehicleType.MOTORCYCLE.type -> {
-                val vehicleGeneric = VehicleGeneric(Motorcycle::class.java)
-                calculateVehiclePayment(
-                    Prices.MOTORCYCLE.hour,
-                    Prices.MOTORCYCLE.day,
-                    hours
-                ) + vehicleGeneric.getTypeOfVehicle(vehicle)!!.getAdditionalAmountMotorcycle()
-            }
-            else -> throw InvalidDataException("No se logro calcular el pago.")
-        }
+        amount = calculateVehiclePayment(
+            tariffPerVehicle.getHourPrice(),
+            tariffPerVehicle.getDayPrice(),
+            hours
+        ) +  tariffPerVehicle.getAdditionalValue()
     }
 
     private fun calculateVehiclePayment(

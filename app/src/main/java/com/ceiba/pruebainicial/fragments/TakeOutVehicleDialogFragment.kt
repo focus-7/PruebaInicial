@@ -9,6 +9,10 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.ceiba.domain.aggregate.Tariff
+import com.ceiba.domain.service.TariffPerVehicle
+import com.ceiba.domain.service.TariffPerVehicleCarService
+import com.ceiba.domain.service.TariffPerVehicleMotorcycleService
+import com.ceiba.domain.valueobject.VehicleType
 import com.ceiba.pruebainicial.R
 import com.ceiba.pruebainicial.databinding.DialogTakeOutVehicleBinding
 import com.ceiba.pruebainicial.utils.Resource
@@ -23,6 +27,8 @@ class TakeOutVehicleDialogFragment : DialogFragment() {
     private lateinit var binding: DialogTakeOutVehicleBinding
     private val viewModel: TariffViewModel by viewModels()
     private lateinit var tariffOut: Tariff
+    private lateinit var tariffPerVehicleCar: TariffPerVehicle
+    private lateinit var tariffPerVehicleMotorcycle: TariffPerVehicle
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,7 +49,14 @@ class TakeOutVehicleDialogFragment : DialogFragment() {
 
     private fun eventsUI() = with(binding) {
         val c = Calendar.getInstance()
-        tariffOut.vehicleDepartureDate = c.timeInMillis
+
+        if (tariffOut.vehicleType == VehicleType.CAR.type) {
+            tariffPerVehicleCar = TariffPerVehicleCarService()
+            tariffOut.calculateVehicleTariff(tariffPerVehicleCar, c.timeInMillis)
+        } else {
+            tariffPerVehicleMotorcycle = TariffPerVehicleMotorcycleService()
+            tariffOut.calculateVehicleTariff(tariffPerVehicleMotorcycle, c.timeInMillis)
+        }
 
         plate.append(" " + tariffOut.vehicle.plate)
         entryDate.append(" " + tariffOut.getEntryDateString())

@@ -37,15 +37,17 @@ class TariffViewModel @Inject constructor(
             }
         }
 
-    fun enterVehicle(entryDate: Long, vehicle: Vehicle) =
+    fun enterVehicle(tariff: Tariff) =
         liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
             emit(Resource.Loading)
             try {
-                emit(Resource.Success(vehicleService.enterVehicle(entryDate, vehicle)))
+                emit(Resource.Success(vehicleService.enterVehicle(tariff)))
             } catch (e: Exception) {
                 emit(Resource.Failure(e))
             }
         }
+
+
 
     fun takeOutVehicle(tariff: Tariff) =
         liveData(viewModelScope.coroutineContext + Dispatchers.IO) {

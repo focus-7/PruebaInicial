@@ -1,6 +1,5 @@
 package com.ceiba.domain.model
 
-import com.ceiba.domain.valueobject.VehicleType
 import java.io.Serializable
 
 

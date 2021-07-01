@@ -1,8 +1,6 @@
 package com.ceiba.domain.service
 
-import com.ceiba.domain.aggregate.Tariff
-import com.ceiba.domain.model.Car
-import com.ceiba.domain.model.Motorcycle
+import com.ceiba.domain.builder.TariffObjectMother
 import com.ceiba.domain.exception.InvalidDataException
 import com.ceiba.domain.repository.ParkingRepository
 import com.ceiba.domain.repository.VehicleRepository
@@ -31,26 +29,27 @@ class VehicleServiceTest {
     @InjectMocks
     lateinit var parkingService: ParkingService
 
+    private val tariffPerCar = TariffPerVehicleCarService()
+    private val tariffPerMotorcycle = TariffPerVehicleMotorcycleService()
+
     @Test
     fun enterVehicle_withCorrectParameters_successful() {
         //Arrange
-        val entryVehicle = 1624352400000 //June 22, 2021, 9:00 a.m
-        val vehicle = Motorcycle("TYU78E", 150)
+        val tariffMotorcycle = TariffObjectMother.tariffOfMotorcycleCC150()
 
         //Assert
-        assertTrue(vehicleService.enterVehicle(entryVehicle, vehicle))
+        assertTrue(vehicleService.enterVehicle(tariffMotorcycle))
     }
 
     @Test
     fun enterVehicle_noAvailableSpaceForMotorcycle_successful() {
         //Arrange
-        val entryVehicle = 1624352400000 //June 22, 2021, 9:00 a.m
-        val vehicle = Motorcycle("TYU78E", 150)
+        val tariffMotorcycle = TariffObjectMother.tariffOfMotorcycleCC150()
         `when`(parkingRepository.getQuantityOfVehicles(2)).thenReturn(11)
 
         try {
             //Act
-            vehicleService.enterVehicle(entryVehicle, vehicle)
+            vehicleService.enterVehicle(tariffMotorcycle)
         } catch (ex: InvalidDataException) {
             //Assert
             assertEquals("No hay campo disponible para el vehículo.", ex.message)
@@ -60,13 +59,12 @@ class VehicleServiceTest {
     @Test
     fun enterVehicle_noAvailableSpaceForCar_successful() {
         //Arrange
-        val entryVehicle = 1624352400000 //June 22, 2021, 9:00 a.m
-        val vehicle = Car("TYU786")
+        val tariffCar = TariffObjectMother.tariffOfCar()
         `when`(parkingRepository.getQuantityOfVehicles(1)).thenReturn(21)
 
         try {
             //Act
-            vehicleService.enterVehicle(entryVehicle, vehicle)
+            vehicleService.enterVehicle(tariffCar)
         } catch (ex: InvalidDataException) {
             //Assert
             assertEquals("No hay campo disponible para el vehículo.", ex.message)
@@ -76,27 +74,25 @@ class VehicleServiceTest {
     @Test
     fun takeOut_vehicleWithCorrectParameters_successful() {
         //Arrange
-        val entryVehicle = 1624266000000 //June 21, 2021, 9:00 a.m
-        val vehicle = Car("TYU78E")
-        val car = Tariff(entryVehicle, vehicle)
+        val tariffCar = TariffObjectMother.tariffOfCar()
+        TariffObjectMother.departureVehicleInJuneAtOnePm(tariffCar)
 
         //Act
-        car.vehicleDepartureDate = 1624366800000 //June 22, 2021, 1:00 p.m
+        tariffCar.calculateVehicleTariff(tariffPerCar, tariffCar.vehicleDepartureDate)
 
         //Assert
-        assertTrue(vehicleService.takeOutVehicle(car))
+        assertTrue(vehicleService.takeOutVehicle(tariffCar))
     }
 
     @Test
     fun takeOut_vehicleWithNullParameters_failure() {
         //Arrange
-        val entryVehicle = 1624266000000 //June 21, 2021, 9:00 a.m
-        val vehicle = Car("TYU78E")
-        val car = Tariff(entryVehicle, vehicle)
+        val tariffCar = TariffObjectMother.tariffOfCar()
+        TariffObjectMother.departureVehicleInJuneAtOnePm(tariffCar)
 
         try {
             //Act
-            vehicleService.takeOutVehicle(car)
+            vehicleService.takeOutVehicle(tariffCar)
         } catch (ex: InvalidDataException) {
             //Assert
             assertEquals("No se logro calcular el pago.", ex.message)
@@ -106,10 +102,10 @@ class VehicleServiceTest {
     @Test
     fun get_vehiclesByPlate_successful() {
         //Arrange
-        val vehicle = Car("TYU78E")
+        val car = TariffObjectMother.vehicleTypeCar()
 
         //Act
-        assertNotNull(parkingService.getVehiclesByPlate(vehicle.plate))
+        assertNotNull(parkingService.getVehiclesByPlate(car.plate))
     }
 
     @Test

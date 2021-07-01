@@ -8,6 +8,7 @@ import android.view.Window
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.ceiba.domain.aggregate.Tariff
 import com.ceiba.domain.model.Car
 import com.ceiba.domain.model.Motorcycle
 import com.ceiba.domain.model.Vehicle
@@ -59,7 +60,8 @@ class EnterVehicleDialogFragment : DialogFragment() {
         buttonAdd.setOnClickListener {
             val c = Calendar.getInstance()
             if (validateData()) {
-                saveData(c.timeInMillis, getTypeOfVehicle())
+                val tariff = Tariff(c.timeInMillis, getTypeOfVehicle())
+                saveData(tariff)
             } else {
                 MaterialAlertDialogBuilder(requireContext())
                     .setTitle(resources.getString(R.string.error))
@@ -90,8 +92,8 @@ class EnterVehicleDialogFragment : DialogFragment() {
         }
     }
 
-    private fun saveData(date: Long, vehicle: Vehicle) {
-        viewModel.enterVehicle(date, vehicle).observe(viewLifecycleOwner, { result ->
+    private fun saveData(tariff: Tariff) {
+        viewModel.enterVehicle(tariff).observe(viewLifecycleOwner, { result ->
             when (result) {
                 is Resource.Success -> {
                     findNavController().navigate(R.id.mainFragment)

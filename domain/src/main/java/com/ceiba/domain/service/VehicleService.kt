@@ -3,6 +3,7 @@ package com.ceiba.domain.service
 import com.ceiba.domain.aggregate.Tariff
 import com.ceiba.domain.exception.InvalidDataException
 import com.ceiba.domain.repository.VehicleRepository
+import java.util.*
 import javax.inject.Inject
 
 class VehicleService @Inject constructor(
@@ -10,7 +11,12 @@ class VehicleService @Inject constructor(
     private val parkingService: ParkingService,
 ) {
     fun enterCar(tariff: Tariff): Boolean {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = tariff.entryDate
+        val day = calendar.get(Calendar.DAY_OF_WEEK)
         if (parkingService.checkAvailableSpaceForCars()) {
+            if (tariff.vehicle.plateInitWithA() && day != Calendar.SUNDAY && day != Calendar.MONDAY)
+                throw InvalidDataException("Vehiculo no autorizado a ingresar")
             vehicleRepository.enterCar(tariff)
         } else {
             throw InvalidDataException("No hay campo disponible para el vehículo.")

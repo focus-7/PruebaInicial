@@ -1,11 +1,9 @@
 package com.ceiba.domain.aggregate
 
-import com.ceiba.domain.exception.InvalidDataException
 import com.ceiba.domain.model.Vehicle
 import com.ceiba.domain.service.TariffPerVehicle
 import com.ceiba.domain.util.ConvertDate.convertLongToTime
 import java.io.Serializable
-import java.util.*
 
 
 class Tariff(var entryDate: Long, vehicle: Vehicle) : Serializable {
@@ -17,24 +15,13 @@ class Tariff(var entryDate: Long, vehicle: Vehicle) : Serializable {
 
     var vehicle: Vehicle = vehicle
         private set
-    var vehicleType: Int = 0
+    var vehicleType: Int = vehicle.vehicleType
         private set
     var vehicleEntryDate: Long = entryDate
         private set
     var amount: Double? = null
         private set
     var vehicleDepartureDate: Long = 0
-
-    init {
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = entryDate
-        val day = calendar.get(Calendar.DAY_OF_WEEK)
-        if (vehicle.plateInitWithA() && day != Calendar.SUNDAY && day != Calendar.MONDAY)
-            throw InvalidDataException("Vehiculo no autorizado a ingresar")
-        else
-            vehicleType = vehicle.vehicleType
-    }
-
 
     fun calculateVehicleTariff(tariffPerVehicle: TariffPerVehicle, departureDate: Long) {
         vehicleDepartureDate = departureDate

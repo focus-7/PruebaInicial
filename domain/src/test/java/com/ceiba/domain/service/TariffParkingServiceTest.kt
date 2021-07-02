@@ -4,6 +4,7 @@ import com.ceiba.domain.builder.TariffObjectMother
 import com.ceiba.domain.exception.InvalidDataException
 import com.ceiba.domain.repository.ParkingRepository
 import com.ceiba.domain.repository.VehicleRepository
+import com.ceiba.domain.valueobject.VehicleType
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -16,7 +17,7 @@ import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
 
 
-class VehicleServiceTest {
+class TariffParkingServiceTest {
     @Mock
     lateinit var vehicleRepository: VehicleRepository
 
@@ -27,13 +28,14 @@ class VehicleServiceTest {
     val mockitoRule: MockitoRule = MockitoJUnit.rule()
 
     @InjectMocks
-    lateinit var parkingService: ParkingService
+    lateinit var searchVehicleService: SearchVehicleService
 
-    private lateinit var vehicleService: VehicleService
+    private lateinit var tariffParkingService: TariffParkingService
+
     @Before
     fun setup() {
         initMocks(this)
-        vehicleService = VehicleService(vehicleRepository, parkingService)
+        tariffParkingService = TariffParkingService(vehicleRepository, parkingRepository)
     }
 
     private val tariffPerCar = TariffCarService()
@@ -45,18 +47,18 @@ class VehicleServiceTest {
         val tariffMotorcycle = TariffObjectMother.tariffOfMotorcycleCC150()
 
         //Assert
-        assertTrue(vehicleService.enterMotorcycle(tariffMotorcycle))
+        assertTrue(tariffParkingService.enterVehicle(tariffMotorcycle))
     }
 
     @Test
     fun enterVehicle_noAvailableSpaceForMotorcycle_successful() {
         //Arrange
         val tariffMotorcycle = TariffObjectMother.tariffOfMotorcycleCC150()
-        `when`(parkingRepository.getQuantityOfMotorcycles()).thenReturn(11)
+        `when`(parkingRepository.getCountVehiclesByType(VehicleType.MOTORCYCLE.type)).thenReturn(11)
 
         try {
             //Act
-            vehicleService.enterMotorcycle(tariffMotorcycle)
+            tariffParkingService.enterVehicle(tariffMotorcycle)
         } catch (ex: InvalidDataException) {
             //Assert
             assertEquals("No hay campo disponible para el vehículo.", ex.message)
@@ -67,11 +69,11 @@ class VehicleServiceTest {
     fun enterVehicle_noAvailableSpaceForCar_successful() {
         //Arrange
         val tariffCar = TariffObjectMother.tariffOfCar()
-        `when`(parkingRepository.getQuantityOfCars()).thenReturn(21)
+        `when`(parkingRepository.getCountVehiclesByType(VehicleType.CAR.type)).thenReturn(21)
 
         try {
             //Act
-            vehicleService.enterCar(tariffCar)
+            tariffParkingService.enterVehicle(tariffCar)
         } catch (ex: InvalidDataException) {
             //Assert
             assertEquals("No hay campo disponible para el vehículo.", ex.message)
@@ -85,10 +87,10 @@ class VehicleServiceTest {
         TariffObjectMother.departureVehicleInJuneAtOnePm(tariffCar)
 
         //Act
-        tariffCar.calculateVehicleTariff(tariffPerCar, tariffCar.vehicleDepartureDate)
+        tariffCar.setTariffVehicle(tariffPerCar, tariffCar.vehicleDepartureDate)
 
         //Assert
-        assertTrue(vehicleService.takeOutVehicle(tariffCar))
+        assertTrue(tariffParkingService.takeOutVehicle(tariffCar))
     }
 
     @Test
@@ -99,7 +101,7 @@ class VehicleServiceTest {
 
         try {
             //Act
-            vehicleService.takeOutVehicle(tariffCar)
+            tariffParkingService.takeOutVehicle(tariffCar)
         } catch (ex: InvalidDataException) {
             //Assert
             assertEquals("No se logro calcular el pago.", ex.message)
@@ -112,12 +114,12 @@ class VehicleServiceTest {
         val car = TariffObjectMother.vehicleTypeCar()
 
         //Act
-        assertNotNull(parkingService.getVehiclesByPlate(car.plate))
+        assertNotNull(searchVehicleService.getVehiclesByPlate(car.plate))
     }
 
     @Test
     fun get_allVehicles_successful() {
         //Act
-        assertNotNull(vehicleService.getVehicles())
+        assertNotNull(tariffParkingService.getVehicles())
     }
 }

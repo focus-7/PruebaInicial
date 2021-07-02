@@ -8,12 +8,9 @@ import javax.inject.Inject
 
 class ParkingRepositoryRoom @Inject constructor(private val vehicleDao: VehicleDao) :
     ParkingRepository {
-    override fun getQuantityOfCars(): Int {
-        return vehicleDao.getCountCars()
-    }
 
-    override fun getQuantityOfMotorcycles(): Int {
-        return vehicleDao.getCountMotorcycles()
+    override fun getCountVehiclesByType(type: Int): Int {
+        return vehicleDao.getCountVehiclesByType(type)
     }
 
     override fun searchVehicleByPlate(plate: String): List<Tariff> {

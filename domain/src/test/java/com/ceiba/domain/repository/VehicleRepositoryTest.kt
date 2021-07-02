@@ -19,7 +19,7 @@ class VehicleRepositoryTest {
         val motorcycle = TariffObjectMother.tariffOfMotorcycleCC150()
 
         //Act
-        vehicleRepository.enterMotorcycle(motorcycle)
+        vehicleRepository.enterVehicle(motorcycle)
     }
 
     @Test
@@ -28,7 +28,7 @@ class VehicleRepositoryTest {
         val car = TariffObjectMother.tariffOfCar()
 
         //Act
-        vehicleRepository.enterCar(car)
+        vehicleRepository.enterVehicle(car)
     }
 
     @Test
@@ -37,7 +37,7 @@ class VehicleRepositoryTest {
         val tariffCar = TariffObjectMother.tariffOfCar()
         val tariffPerCar = TariffCarService()
         TariffObjectMother.departureVehicleInJuneAtOnePm(tariffCar)
-        tariffCar.calculateVehicleTariff(tariffPerCar, tariffCar.vehicleDepartureDate)
+        tariffCar.setTariffVehicle(tariffPerCar, tariffCar.vehicleDepartureDate)
 
         //Act
         vehicleRepository.takeOutVehicle(tariffCar)
@@ -49,7 +49,7 @@ class VehicleRepositoryTest {
         val tariffMotorcycle = TariffObjectMother.tariffOfMotorcycleCC150()
         val tariffPerMotorcycle = TariffMotorcycleService()
         TariffObjectMother.departureVehicleInJuneAtOnePm(tariffMotorcycle)
-        tariffMotorcycle.calculateVehicleTariff(
+        tariffMotorcycle.setTariffVehicle(
             tariffPerMotorcycle,
             tariffMotorcycle.vehicleDepartureDate
         )

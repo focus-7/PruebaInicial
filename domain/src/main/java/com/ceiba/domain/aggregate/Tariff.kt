@@ -1,11 +1,9 @@
 package com.ceiba.domain.aggregate
 
-import com.ceiba.domain.exception.InvalidDataException
+import com.ceiba.domain.interfaceservice.TariffPerVehicle
 import com.ceiba.domain.model.Vehicle
-import com.ceiba.domain.service.TariffPerVehicle
 import com.ceiba.domain.util.ConvertDate.convertLongToTime
 import java.io.Serializable
-import java.util.*
 
 
 class Tariff(var entryDate: Long, vehicle: Vehicle) : Serializable {
@@ -17,56 +15,28 @@ class Tariff(var entryDate: Long, vehicle: Vehicle) : Serializable {
 
     var vehicle: Vehicle = vehicle
         private set
-    var vehicleType: Int = 0
+    var vehicleType: Int = vehicle.vehicleType
         private set
     var vehicleEntryDate: Long = entryDate
         private set
     var amount: Double? = null
         private set
     var vehicleDepartureDate: Long = 0
-
-    init {
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = entryDate
-        val day = calendar.get(Calendar.DAY_OF_WEEK)
-        if (vehicle.plateInitWithA() && day != Calendar.SUNDAY && day != Calendar.MONDAY)
-            throw InvalidDataException("Vehiculo no autorizado a ingresar")
-        else
-            vehicleType = vehicle.vehicleType
-    }
+    var hours: Int = 0
 
 
-    fun calculateVehicleTariff(tariffPerVehicle: TariffPerVehicle, departureDate: Long) {
+    fun setTariffVehicle(tariffPerVehicle: TariffPerVehicle, departureDate: Long) {
         vehicleDepartureDate = departureDate
-
-        var hours =
-            ((vehicleDepartureDate - vehicleEntryDate) / MILLS_HOUR).toInt()
-        if (hours == 0) hours = 1
-
-        amount = calculateVehiclePayment(
-            tariffPerVehicle.getHourPrice(),
-            tariffPerVehicle.getDayPrice(),
-            hours
-        ) +  tariffPerVehicle.getAdditionalValue()
+        hours = getHoursOfParking()
+        amount = tariffPerVehicle.calculateTariffVehicle(hours)
     }
 
-    private fun calculateVehiclePayment(
-        priceHour: Double,
-        priceDay: Double,
-        hours: Int
-    ): Double {
-        return when {
-            hours < MAX_HOUR -> hours * priceHour
-            hours in MAX_HOUR..MAX_HOUR_DAY -> priceDay
-            else -> {
-                val days = hours / MAX_HOUR_DAY
-                val restOfHours = hours % MAX_HOUR_DAY
-                priceDay * days + priceHour * restOfHours
-            }
-        }
+    private fun getHoursOfParking(): Int {
+        var hours = ((vehicleDepartureDate - entryDate) / MILLS_HOUR).toInt()
+        if (hours == 0) hours = 1
+        return hours
     }
 
     fun getEntryDateString() = vehicleEntryDate.convertLongToTime()
-
     fun getDepartureDateString() = vehicleDepartureDate.convertLongToTime()
 }

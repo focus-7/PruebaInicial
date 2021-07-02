@@ -3,7 +3,6 @@ package com.ceiba.domain.builder
 import com.ceiba.domain.aggregate.Tariff
 import com.ceiba.domain.model.Car
 import com.ceiba.domain.model.Motorcycle
-import com.ceiba.domain.service.TariffPerVehicle
 import java.text.SimpleDateFormat
 import java.util.*
 

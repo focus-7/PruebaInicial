@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.ceiba.application.service.ParkingApplicationService
 import com.ceiba.application.service.VehicleApplicationService
 import com.ceiba.domain.aggregate.Tariff
-import com.ceiba.domain.valueobject.VehicleType
 import com.ceiba.pruebainicial.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -41,10 +40,7 @@ class TariffViewModel @Inject constructor(
         liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
             emit(Resource.Loading)
             try {
-                if (tariff.vehicleType == VehicleType.CAR.type)
-                    emit(Resource.Success(vehicleApplicationService.enterCar(tariff)))
-                else
-                    emit(Resource.Success(vehicleApplicationService.enterMotorcycle(tariff)))
+                emit(Resource.Success(vehicleApplicationService.enterVehicle(tariff)))
             } catch (e: Exception) {
                 emit(Resource.Failure(e))
             }

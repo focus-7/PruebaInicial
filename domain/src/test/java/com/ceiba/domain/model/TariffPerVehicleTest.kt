@@ -40,7 +40,7 @@ class TariffPerVehicleTest {
         TariffObjectMother.departureVehicleInJuneAtOnePm(tariffCar)
 
         //Act
-        tariffCar.calculateVehicleTariff(tariffPerCar, tariffCar.vehicleDepartureDate)
+        tariffCar.setTariffVehicle(tariffPerCar, tariffCar.vehicleDepartureDate)
 
         //Assert
         assertEquals(expected, tariffCar.amount)
@@ -54,7 +54,7 @@ class TariffPerVehicleTest {
         TariffObjectMother.departureVehicleInJuneAtEightPm(tariffMotorcycle)
 
         //Act
-        tariffMotorcycle.calculateVehicleTariff(
+        tariffMotorcycle.setTariffVehicle(
             tariffPerMotorcycle,
             tariffMotorcycle.vehicleDepartureDate
         )
@@ -71,7 +71,7 @@ class TariffPerVehicleTest {
         TariffObjectMother.departureVehicleInJuneAtFivePm(tariffMotorcycle)
 
         //Act
-        tariffMotorcycle.calculateVehicleTariff(
+        tariffMotorcycle.setTariffVehicle(
             tariffPerMotorcycle,
             tariffMotorcycle.vehicleDepartureDate
         )
@@ -100,7 +100,7 @@ class TariffPerVehicleTest {
         TariffObjectMother.departureVehicleInJune901am(tariffCar)
 
         //Act
-        tariffCar.calculateVehicleTariff(tariffPerCar, tariffCar.vehicleDepartureDate)
+        tariffCar.setTariffVehicle(tariffPerCar, tariffCar.vehicleDepartureDate)
 
         //Assert
         assertEquals(expected, tariffCar.amount)
@@ -132,7 +132,7 @@ class TariffPerVehicleTest {
         val expected = 4000.0
 
         //Act
-        tariffCar.calculateVehicleTariff(tariffPerCar, tariffCar.vehicleDepartureDate)
+        tariffCar.setTariffVehicle(tariffPerCar, tariffCar.vehicleDepartureDate)
 
         //Assert
         assertEquals(expected, tariffCar.amount)

@@ -28,7 +28,8 @@ import org.junit.runner.RunWith
 class VehicleInstrumentationTest {
     @get:Rule
     var activityScenarioRule:
-            ActivityScenarioRule<HomeVehicleActivity> = ActivityScenarioRule(HomeVehicleActivity::class.java)
+            ActivityScenarioRule<HomeVehicleActivity> =
+        ActivityScenarioRule(HomeVehicleActivity::class.java)
 
     @Test
     fun addVehicleToListTest() {

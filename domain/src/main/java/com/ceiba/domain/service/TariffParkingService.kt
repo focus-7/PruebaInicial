@@ -21,9 +21,10 @@ class TariffParkingService @Inject constructor(
     }
 
     fun enterVehicle(tariff: Tariff): Boolean {
-        if (checkAvailableSpaceForVehicles(tariff) && validateEntryDateVehicle(tariff)) {
-            if (validatePlateFormat(tariff.vehicle.plate))
-                vehicleRepository.enterVehicle(tariff)
+        if (checkAvailableSpaceForVehicles(tariff) && validateEntryDateVehicle(tariff)
+            && validatePlateFormat(tariff.vehicle.plate)
+        ) {
+            vehicleRepository.enterVehicle(tariff)
         } else {
             throw InvalidDataException("No hay campo disponible para el vehículo.")
         }

@@ -58,9 +58,6 @@ dependencies {
     //hilt
     implementation "com.google.dagger:hilt-android:2.33-beta"
 
-    //test
-    testImplementation 'androidx.arch.core:core-testing:2.1.0'
-
     //library
     implementation project(":domain")
 }

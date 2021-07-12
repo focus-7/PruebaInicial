@@ -6,7 +6,6 @@ import com.ceiba.domain.factory.VehicleFactory
 import com.ceiba.domain.interfaceservice.TariffPerVehicle
 import com.ceiba.domain.repository.ParkingRepository
 import com.ceiba.domain.repository.VehicleRepository
-import kotlinx.coroutines.flow.Flow
 import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -41,7 +40,7 @@ class TariffParkingService @Inject constructor(
         }
     }
 
-    fun getVehicles(): Flow<List<Tariff>> {
+    fun getVehicles(): List<Tariff> {
         return vehicleRepository.getVehicles()
     }
 

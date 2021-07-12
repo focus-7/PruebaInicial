@@ -4,6 +4,7 @@ import com.ceiba.domain.interfaceservice.TariffPerVehicle
 import com.ceiba.domain.model.Vehicle
 import com.ceiba.domain.util.ConvertDate.convertLongToTime
 import java.io.Serializable
+import java.text.DateFormat
 
 
 class Tariff(var entryDate: Long, vehicle: Vehicle) : Serializable {

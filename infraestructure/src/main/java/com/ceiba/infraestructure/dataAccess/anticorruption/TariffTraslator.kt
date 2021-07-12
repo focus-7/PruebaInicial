@@ -7,6 +7,8 @@ import com.ceiba.domain.model.Motorcycle
 import com.ceiba.domain.model.Vehicle
 import com.ceiba.domain.valueobject.VehicleType
 import com.ceiba.infraestructure.dataAccess.entity.TariffEntityRoom
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 fun Tariff.asTariffEntity(): TariffEntityRoom {
     return TariffEntityRoom(
@@ -26,6 +28,19 @@ fun Tariff.getCylinderCapacity(): Int? {
 }
 
 
+fun Flow<List<TariffEntityRoom>>.asVehicleListFlow(): Flow<List<Tariff>> {
+    return map {
+        it.map { item ->
+            val newVehicle: Vehicle = when (item.type) {
+                VehicleType.CAR.type -> Car(item.plate)
+                VehicleType.MOTORCYCLE.type -> Motorcycle(item.plate, item.cylinderCapacity ?: 0)
+                else -> throw InvalidDataException("No se puede definir el tipo de vehiculo")
+            }
+            Tariff(item.entryDate, newVehicle)
+        }
+    }
+}
+
 fun List<TariffEntityRoom>.asVehicleList(): List<Tariff> {
     return map {
         val newVehicle: Vehicle = when (it.type) {
@@ -36,3 +51,4 @@ fun List<TariffEntityRoom>.asVehicleList(): List<Tariff> {
         Tariff(it.entryDate, newVehicle)
     }
 }
+

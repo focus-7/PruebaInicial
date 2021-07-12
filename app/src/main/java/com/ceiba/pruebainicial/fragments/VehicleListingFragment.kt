@@ -30,7 +30,7 @@ class VehicleListingFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentListVehiclesBinding.inflate(inflater, container, false)
         return binding.root
@@ -64,22 +64,28 @@ class VehicleListingFragment : Fragment() {
     }
 
     private fun subscribeUI() = with(binding) {
-        viewModel.getVehicles().observe(viewLifecycleOwner, Observer { result ->
-            loader.loaderContainer.showIf { result is Resource.Loading }
-            when (result) {
-                is Resource.Loading -> {
+        viewModel.vehicles.observe(viewLifecycleOwner, Observer { result ->
+            if (result.isNotEmpty()) {
+                vehicleAdapter.setTariffList(result)
+            } else {
+                emptyContainer.root.show()
+                return@Observer
+            }
+        })
+
+        viewModel.screenState.observe(viewLifecycleOwner, {
+            when (it) {
+                MainScreenState.LOADING_DATA -> {
+                    loader.loaderContainer.show()
                     emptyContainer.root.hide()
                 }
-                is Resource.Success -> {
-                    if (result.data.isEmpty()) {
-                        emptyContainer.root.show()
-                        return@Observer
-                    }
-                    vehicleAdapter.setTariffList(result.data)
-                    emptyContainer.root.hide()
+                MainScreenState.SHOW_DATA -> {
+                    loader.loaderContainer.hide()
                 }
-                is Resource.Failure -> {
-                    showToast("Ocurrió un error al traer los datos ${result.exception}")
+                else -> {
+                    showToast("Ocurrió un error al traer los datos")
+                    emptyContainer.root.hide()
+                    loader.loaderContainer.hide()
                 }
             }
         })

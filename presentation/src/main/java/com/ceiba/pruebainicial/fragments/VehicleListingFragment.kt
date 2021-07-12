@@ -25,7 +25,7 @@ class VehicleListingFragment : Fragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
 
-        vehicleAdapter = VehicleAdapter(requireContext())
+        vehicleAdapter = VehicleAdapter()
     }
 
     override fun onCreateView(
@@ -75,7 +75,8 @@ class VehicleListingFragment : Fragment() {
                         emptyContainer.root.show()
                         return@Observer
                     }
-                    vehicleAdapter.setTariffList(result.data)
+                    vehicleAdapter.submitList(result.data)
+
                     emptyContainer.root.hide()
                 }
                 is Resource.Failure -> {
@@ -101,7 +102,7 @@ class VehicleListingFragment : Fragment() {
                             return@Observer
                         }
                         binding.rvVehicles.show()
-                        vehicleAdapter.setTariffList(result.data)
+                        vehicleAdapter.submitList(result.data)
                         binding.emptyContainer.root.hide()
                     }
                     is Resource.Failure -> {

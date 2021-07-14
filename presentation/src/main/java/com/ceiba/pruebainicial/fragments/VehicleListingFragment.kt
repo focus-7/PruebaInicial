@@ -81,6 +81,10 @@ class VehicleListingFragment : Fragment() {
 
         viewModel.vehiclesByPlate.observe(viewLifecycleOwner, { items ->
             items.let {
+                if (it.isEmpty())
+                    emptyContainer.show()
+                else
+                    emptyContainer.hide()
                 vehicleAdapter.submitList(it)
             }
         })

@@ -73,12 +73,16 @@ class VehicleListingFragment : Fragment() {
             }
         })
 
-        viewModel.vehicles.observe(viewLifecycleOwner, { result ->
-            vehicleAdapter.submitList(result)
+        viewModel.vehicles.observe(viewLifecycleOwner, { items ->
+            items.let {
+                vehicleAdapter.submitList(it)
+            }
         })
 
-        viewModel.vehiclesByPlate.observe(viewLifecycleOwner, { result ->
-            vehicleAdapter.submitList(result)
+        viewModel.vehiclesByPlate.observe(viewLifecycleOwner, { items ->
+            items.let {
+                vehicleAdapter.submitList(it)
+            }
         })
     }
 }

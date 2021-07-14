@@ -1,82 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
-
-    <TextView
-        android:id="@+id/plate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingStart="0dp"
-        android:paddingEnd="10dp"
-        android:text="@string/tv_placa" />
-
-    <TextView
-        android:id="@+id/entry_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/common_elevation"
-        android:paddingStart="0dp"
-        android:paddingEnd="10dp"
-        android:text="@string/tv_entry_date" />
-
-    <TextView
-        android:id="@+id/departure_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/common_elevation"
-        android:paddingStart="0dp"
-        android:paddingEnd="10dp"
-        android:text="@string/tv_departure_date" />
-
-    <TextView
-        android:id="@+id/payment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/common_elevation"
-        android:paddingStart="0dp"
-        android:paddingEnd="10dp"
-        android:text="@string/tv_payment" />
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:orientation="horizontal"
-        android:paddingTop="20dp">
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <include
-            android:id="@+id/loader"
-            layout="@layout/loader" />
+        <TextView
+            android:id="@+id/plate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="0dp"
+            android:paddingEnd="10dp"
+            android:text="@string/tv_placa" />
+
+        <TextView
+            android:id="@+id/entry_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_elevation"
+            android:paddingStart="0dp"
+            android:paddingEnd="10dp"
+            android:text="@string/tv_entry_date" />
+
+        <TextView
+            android:id="@+id/departure_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_elevation"
+            android:paddingStart="0dp"
+            android:paddingEnd="10dp"
+            android:text="@string/tv_departure_date" />
+
+        <TextView
+            android:id="@+id/payment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_elevation"
+            android:paddingStart="0dp"
+            android:paddingEnd="10dp"
+            android:text="@string/tv_payment" />
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:paddingTop="20dp">
 
-            <Button
-                android:id="@+id/buttonCancel"
-                android:layout_width="wrap_content"
+            <include
+                android:id="@+id/loader"
+                layout="@layout/loader" />
+
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/btn_cancelar" />
-        </LinearLayout>
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+                <Button
+                    android:id="@+id/buttonCancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/btn_cancelar" />
+            </LinearLayout>
 
-            <Button
-                android:id="@+id/buttonPayment"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/btn_pagar" />
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/buttonPayment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/btn_pagar" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</layout>

@@ -41,8 +41,9 @@ class TariffViewModel @Inject constructor(
 
     val vehicles: LiveData<List<Tariff>> =
         vehicleApplicationService.getVehicles()
-        .flowOn(Dispatchers.IO)
-        .asLiveData()
+            .flowOn(Dispatchers.IO)
+            .catch { e: Throwable -> e.printStackTrace() }
+            .asLiveData()
 
     fun enterVehicle(tariff: Tariff) {
         viewModelScope.launch {

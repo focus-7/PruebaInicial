@@ -7,11 +7,19 @@ import javax.inject.Inject
 
 class VehicleApplicationService @Inject constructor(private var tariffParkingService: TariffParkingService) {
     suspend fun enterVehicle(tariff: Tariff) {
-        tariffParkingService.enterVehicle(tariff)
+        try {
+            tariffParkingService.enterVehicle(tariff)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     suspend fun takeOutVehicle(tariff: Tariff) {
-        tariffParkingService.takeOutVehicle(tariff)
+        try {
+            tariffParkingService.takeOutVehicle(tariff)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     fun getVehicles(): Flow<List<Tariff>> {

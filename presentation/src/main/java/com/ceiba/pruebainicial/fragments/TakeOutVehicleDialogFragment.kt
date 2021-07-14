@@ -12,9 +12,6 @@ import com.ceiba.application.service.TariffVehicleApplicationService
 import com.ceiba.domain.aggregate.Tariff
 import com.ceiba.pruebainicial.R
 import com.ceiba.pruebainicial.databinding.DialogTakeOutVehicleBinding
-import com.ceiba.pruebainicial.utils.Resource
-import com.ceiba.pruebainicial.utils.show
-import com.ceiba.pruebainicial.utils.showToast
 import com.ceiba.pruebainicial.viewmodel.TariffViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -60,25 +57,9 @@ class TakeOutVehicleDialogFragment : DialogFragment() {
             dismiss()
         }
         buttonPayment.setOnClickListener {
-            saveData()
+            viewModel.takeOutVehicle(tariffOut)
+            findNavController().navigate(R.id.mainFragment)
         }
-    }
-
-
-    private fun saveData() {
-        viewModel.takeOutVehicle(tariffOut).observe(viewLifecycleOwner, { result ->
-            when (result) {
-                is Resource.Loading -> {
-                    binding.loader.loaderContainer.show()
-                }
-                is Resource.Success -> {
-                    findNavController().navigate(R.id.mainFragment)
-                }
-                is Resource.Failure -> {
-                    showToast("Ocurrió un error al guardar los datos ${result.exception}")
-                }
-            }
-        })
     }
 
     override fun onStart() {

@@ -1,8 +1,12 @@
 package com.ceiba.domain.repository
 
+import com.ceiba.domain.MainCoroutineRule
 import com.ceiba.domain.builder.TariffObjectMother
+import com.ceiba.domain.runBlockingTest
 import com.ceiba.domain.service.TariffCarService
 import com.ceiba.domain.service.TariffMotorcycleService
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
@@ -13,8 +17,13 @@ class VehicleRepositoryTest {
     @Mock
     lateinit var vehicleRepository: VehicleRepository
 
+    @ExperimentalCoroutinesApi
+    @get:Rule
+    val coroutineRule = MainCoroutineRule()
+
+    @ExperimentalCoroutinesApi
     @Test
-    fun enterMotorcycle_motorcycleWithCorrectParameters_successful() {
+    fun enterMotorcycle_motorcycleWithCorrectParameters_successful() = coroutineRule.runBlockingTest {
         //Arrange
         val motorcycle = TariffObjectMother.tariffOfMotorcycleCC150()
 
@@ -22,8 +31,9 @@ class VehicleRepositoryTest {
         vehicleRepository.enterVehicle(motorcycle)
     }
 
+    @ExperimentalCoroutinesApi
     @Test
-    fun enterCar_carWithCorrectParameters_successful() {
+    fun enterCar_carWithCorrectParameters_successful() = coroutineRule.runBlockingTest {
         //Arrange
         val car = TariffObjectMother.tariffOfCar()
 
@@ -31,8 +41,9 @@ class VehicleRepositoryTest {
         vehicleRepository.enterVehicle(car)
     }
 
+    @ExperimentalCoroutinesApi
     @Test
-    fun takeOutCar_WithCorrectParameters_successful() {
+     fun takeOutCar_WithCorrectParameters_successful() = coroutineRule.runBlockingTest {
         //Arrange
         val tariffCar = TariffObjectMother.tariffOfCar()
         val tariffPerCar = TariffCarService()
@@ -43,8 +54,9 @@ class VehicleRepositoryTest {
         vehicleRepository.takeOutVehicle(tariffCar)
     }
 
+    @ExperimentalCoroutinesApi
     @Test
-    fun takeOutMotorcycle_WithCorrectParameters_successful() {
+     fun takeOutMotorcycle_WithCorrectParameters_successful() = coroutineRule.runBlockingTest {
         //Arrange
         val tariffMotorcycle = TariffObjectMother.tariffOfMotorcycleCC150()
         val tariffPerMotorcycle = TariffMotorcycleService()

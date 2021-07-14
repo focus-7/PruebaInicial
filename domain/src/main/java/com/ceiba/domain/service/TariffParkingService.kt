@@ -6,6 +6,7 @@ import com.ceiba.domain.factory.VehicleFactory
 import com.ceiba.domain.interfaceservice.TariffPerVehicle
 import com.ceiba.domain.repository.ParkingRepository
 import com.ceiba.domain.repository.VehicleRepository
+import kotlinx.coroutines.flow.Flow
 import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -20,18 +21,18 @@ class TariffParkingService @Inject constructor(
         const val PLATE_PATTERN_STRING = "^[A-Z]{3}[A-Z 0-9]{3}\$"
     }
 
-    fun enterVehicle(tariff: Tariff): Boolean {
+    suspend fun enterVehicle(tariff: Tariff): Boolean {
         if (checkAvailableSpaceForVehicles(tariff) && validateEntryDateVehicle(tariff)
             && validatePlateFormat(tariff.vehicle.plate)
         ) {
             vehicleRepository.enterVehicle(tariff)
+            return true
         } else {
             throw InvalidDataException("No hay campo disponible para el vehículo.")
         }
-        return true
     }
 
-    fun takeOutVehicle(tariff: Tariff): Boolean {
+    suspend fun takeOutVehicle(tariff: Tariff): Boolean {
         if (tariff.amount != null) {
             vehicleRepository.takeOutVehicle(tariff)
             return true
@@ -40,7 +41,7 @@ class TariffParkingService @Inject constructor(
         }
     }
 
-    fun getVehicles(): List<Tariff> {
+    fun getVehicles(): Flow<List<Tariff>> {
         return vehicleRepository.getVehicles()
     }
 
@@ -59,7 +60,7 @@ class TariffParkingService @Inject constructor(
         return true
     }
 
-    private fun checkAvailableSpaceForVehicles(tariff: Tariff): Boolean {
+    private suspend fun checkAvailableSpaceForVehicles(tariff: Tariff): Boolean {
         val vehicleFactory = VehicleFactory()
         val tariffPerVehicle: TariffPerVehicle = vehicleFactory.getVehicle(tariff.vehicleType)
         return parkingRepository.getCountVehiclesByType(tariff.vehicleType) < tariffPerVehicle.getMaxQuantityOfVehicles()

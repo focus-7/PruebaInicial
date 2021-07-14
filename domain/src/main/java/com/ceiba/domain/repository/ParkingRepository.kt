@@ -1,8 +1,9 @@
 package com.ceiba.domain.repository
 
 import com.ceiba.domain.aggregate.Tariff
+import kotlinx.coroutines.flow.Flow
 
 interface ParkingRepository {
-    fun getCountVehiclesByType(type: Int): Int
-    fun searchVehicleByPlate(plate: String): List<Tariff>
+    suspend fun getCountVehiclesByType(type: Int): Int
+    fun searchVehicleByPlate(plate: String): Flow<List<Tariff>>
 }

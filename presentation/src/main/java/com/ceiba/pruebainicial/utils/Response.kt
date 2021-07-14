@@ -5,19 +5,21 @@ import android.content.res.Resources
 import android.graphics.Rect
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 
 inline fun SearchView.onQueryTextChanged(crossinline onQueryTextChanged: (String) -> Unit) {
+
     setOnQueryTextListener(object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String): Boolean {
-            onQueryTextChanged(query)
-            return false
+            return true
         }
+
         override fun onQueryTextChange(newText: String?): Boolean {
-            return false
+            onQueryTextChanged(newText.orEmpty())
+            return true
         }
     })
 }

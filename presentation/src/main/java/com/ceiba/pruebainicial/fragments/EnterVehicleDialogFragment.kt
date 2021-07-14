@@ -14,10 +14,8 @@ import com.ceiba.domain.model.Motorcycle
 import com.ceiba.domain.model.Vehicle
 import com.ceiba.pruebainicial.R
 import com.ceiba.pruebainicial.databinding.DialogAddVehicleBinding
-import com.ceiba.pruebainicial.utils.Resource
 import com.ceiba.pruebainicial.utils.hide
 import com.ceiba.pruebainicial.utils.show
-import com.ceiba.pruebainicial.utils.showToast
 import com.ceiba.pruebainicial.viewmodel.TariffViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
@@ -61,7 +59,8 @@ class EnterVehicleDialogFragment : DialogFragment() {
             val c = Calendar.getInstance()
             if (validateData()) {
                 val tariff = Tariff(c.timeInMillis, getTypeOfVehicle())
-                saveData(tariff)
+                viewModel.enterVehicle(tariff)
+                findNavController().navigate(R.id.mainFragment)
             } else {
                 MaterialAlertDialogBuilder(requireContext())
                     .setTitle(resources.getString(R.string.error))
@@ -90,22 +89,6 @@ class EnterVehicleDialogFragment : DialogFragment() {
                 cylinderCapacity.text.toString().toInt()
             )
         }
-    }
-
-    private fun saveData(tariff: Tariff) {
-        viewModel.enterVehicle(tariff).observe(viewLifecycleOwner, { result ->
-            when (result) {
-                is Resource.Success -> {
-                    findNavController().navigate(R.id.mainFragment)
-                }
-                is Resource.Failure -> {
-                    showToast("Ocurrió un error al guardar los datos ${result.exception}")
-                }
-                is Resource.Loading -> {
-                    binding.loader.loaderContainer.show()
-                }
-            }
-        })
     }
 
     override fun onStart() {

@@ -1,19 +1,23 @@
 package com.ceiba.pruebainicial.fragments
 
 import android.os.Bundle
-import android.view.*
-import androidx.appcompat.widget.SearchView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ceiba.pruebainicial.R
 import com.ceiba.pruebainicial.adapters.VehicleAdapter
 import com.ceiba.pruebainicial.databinding.FragmentListVehiclesBinding
-import com.ceiba.pruebainicial.utils.*
+import com.ceiba.pruebainicial.utils.hide
+import com.ceiba.pruebainicial.utils.onQueryTextChanged
+import com.ceiba.pruebainicial.utils.show
 import com.ceiba.pruebainicial.viewmodel.TariffViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 
 @AndroidEntryPoint
 class VehicleListingFragment : Fragment() {
@@ -30,85 +34,51 @@ class VehicleListingFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentListVehiclesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
+
+    @ExperimentalCoroutinesApi
+    @FlowPreview
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.rvVehicles.layoutManager = LinearLayoutManager(requireContext())
         binding.rvVehicles.adapter = vehicleAdapter
         eventsEntry()
-        subscribeUI()
+        subscribeUi()
     }
 
     private fun eventsEntry() {
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
-            }
+        binding.searchView.onQueryTextChanged {
+            viewModel.setSearchPlate(it)
+        }
 
-            override fun onQueryTextChange(query: String?): Boolean {
-                if (query != null) {
-                    searchDatabase(query)
-                }
-                return true
-            }
-        })
         binding.btnAddVehicle.setOnClickListener {
             it.findNavController().navigate(R.id.action_mainFragment_to_vehicleDialog)
         }
     }
 
-    private fun subscribeUI() = with(binding) {
-        viewModel.getVehicles().observe(viewLifecycleOwner, Observer { result ->
-            loader.loaderContainer.showIf { result is Resource.Loading }
-            when (result) {
-                is Resource.Loading -> {
-                    emptyContainer.root.hide()
-                }
-                is Resource.Success -> {
-                    if (result.data.isEmpty()) {
-                        emptyContainer.root.show()
-                        return@Observer
-                    }
-                    vehicleAdapter.submitList(result.data)
-
-                    emptyContainer.root.hide()
-                }
-                is Resource.Failure -> {
-                    showToast("Ocurrió un error al traer los datos ${result.exception}")
-                }
+    @FlowPreview
+    @ExperimentalCoroutinesApi
+    private fun subscribeUi() = with(binding) {
+        viewModel.screenState.observe(viewLifecycleOwner, {
+            when (it) {
+                MainScreenState.LOADING_DATA -> loader.loaderContainer.show()
+                MainScreenState.SHOW_DATA -> loader.loaderContainer.hide()
+                else -> loader.loaderContainer.hide()
             }
         })
-    }
 
-    private fun searchDatabase(query: String) {
-        val searchQuery = "%$query%"
+        viewModel.vehicles.observe(viewLifecycleOwner, { result ->
+            vehicleAdapter.submitList(result)
+        })
 
-        viewModel.searchVehiclesByPlate(searchQuery)
-            .observe(viewLifecycleOwner, Observer { result ->
-                when (result) {
-                    is Resource.Loading -> {
-                        binding.emptyContainer.root.hide()
-                    }
-                    is Resource.Success -> {
-                        if (result.data.isEmpty()) {
-                            binding.emptyContainer.root.show()
-                            binding.rvVehicles.hide()
-                            return@Observer
-                        }
-                        binding.rvVehicles.show()
-                        vehicleAdapter.submitList(result.data)
-                        binding.emptyContainer.root.hide()
-                    }
-                    is Resource.Failure -> {
-                        showToast("Ocurrió un error al traer los datos ${result.exception}")
-                    }
-                }
-            })
+        viewModel.vehiclesByPlate.observe(viewLifecycleOwner, { result ->
+            vehicleAdapter.submitList(result)
+        })
     }
 }

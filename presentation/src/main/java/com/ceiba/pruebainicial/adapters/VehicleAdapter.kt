@@ -6,9 +6,8 @@ import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.ceiba.domain.aggregate.Tariff
-import com.ceiba.domain.model.Car
-import com.ceiba.domain.model.Motorcycle
 import com.ceiba.pruebainicial.R
 import com.ceiba.pruebainicial.databinding.VehiclesRowBinding
 
@@ -27,27 +26,17 @@ class VehicleAdapter :
     }
 
     override fun onBindViewHolder(holderVehicle: ViewHolderVehicle, position: Int) {
-        holderVehicle.bind(getItem(position))
+        val item = getItem(position)
+        holderVehicle.bind(item)
     }
 
-    class ViewHolderVehicle(
-        private val binding: VehiclesRowBinding,
-    ) : BaseViewHolder<Tariff>(binding.root) {
-        override fun bind(tariffs: Tariff) {
-            with(binding) {
+    class ViewHolderVehicle(private val binding: VehiclesRowBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(tariffs: Tariff) {
+            binding.apply {
                 tariff = tariffs
-                tariffs.vehicle.apply {
-                    when (this) {
-                        is Car -> isMotorcycle = false
-                        is Motorcycle -> {
-                            isMotorcycle = true
-                            tvCylinderCapacity.text = String.format(
-                                root.resources.getString(R.string.txt_cylindercapacity),
-                                cylinderCapacity.toString()
-                            )
-                        }
-                    }
-                }
+
                 btnTakeOutVehicle.setOnClickListener {
                     it.findNavController()
                         .navigate(
@@ -55,16 +44,18 @@ class VehicleAdapter :
                             bundleOf("dataVehicle" to tariffs)
                         )
                 }
+                executePendingBindings()
             }
         }
     }
 }
 
 private class VehicleDiffCallBack : DiffUtil.ItemCallback<Tariff>() {
+
     override fun areItemsTheSame(oldItem: Tariff, newItem: Tariff): Boolean =
-        (oldItem.vehicle.plate == newItem.vehicle.plate)
+        oldItem.vehicle.plate == newItem.vehicle.plate
+
 
     override fun areContentsTheSame(oldItem: Tariff, newItem: Tariff): Boolean =
-        (oldItem.vehicle.plate == newItem.vehicle.plate)
-
+        oldItem.vehicle.plate == newItem.vehicle.plate
 }

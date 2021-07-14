@@ -2,17 +2,19 @@ package com.ceiba.infraestructure.dataAccess.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.ceiba.infraestructure.dataAccess.entity.TariffEntityRoom
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ParkingDao {
-    @Insert
-    fun insertTariff(tariffEntityRoom: TariffEntityRoom): Long
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertTariff(tariffEntityRoom: TariffEntityRoom)
 
     @Query("DELETE FROM tariff WHERE plate = :plateD")
-    fun deleteTariff(plateD: String): Int
+    suspend fun deleteTariff(plateD: String)
 
     @Query("SELECT * FROM tariff")
-    fun getAllVehicles(): List<TariffEntityRoom>
+    fun getAllVehicles(): Flow<List<TariffEntityRoom>>
 }

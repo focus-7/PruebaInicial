@@ -21,7 +21,7 @@ class TariffParkingService @Inject constructor(
         const val PLATE_PATTERN_STRING = "^[A-Z]{3}[A-Z 0-9]{3}\$"
     }
 
-    suspend fun enterVehicle(tariff: Tariff): Boolean {
+    suspend fun enterVehicle(tariff: Tariff): Boolean  {
         if (checkAvailableSpaceForVehicles(tariff) && validateEntryDateVehicle(tariff)
             && validatePlateFormat(tariff.vehicle.plate)
         ) {
@@ -63,6 +63,6 @@ class TariffParkingService @Inject constructor(
     private suspend fun checkAvailableSpaceForVehicles(tariff: Tariff): Boolean {
         val vehicleFactory = VehicleFactory()
         val tariffPerVehicle: TariffPerVehicle = vehicleFactory.getVehicle(tariff.vehicleType)
-        return parkingRepository.getCountVehiclesByType(tariff.vehicleType) < tariffPerVehicle.getMaxQuantityOfVehicles()
+        return parkingRepository.getCountVehiclesByType(tariff.vehicleType) < tariffPerVehicle.maxQuantity
     }
 }

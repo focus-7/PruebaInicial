@@ -1,8 +1,8 @@
 package com.ceiba.domain.interfaceservice
 
 interface TariffPerVehicle {
-    fun getAdditionalValue(): Double
-    fun getPriceDay(): Double
-    fun getPriceHour(): Double
-    fun getMaxQuantityOfVehicles(): Int
+    val priceDay: Double
+    val priceHour: Double
+    val maxQuantity: Int
+    fun additionalValue(): Double
 }

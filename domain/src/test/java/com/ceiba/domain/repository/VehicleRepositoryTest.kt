@@ -61,10 +61,7 @@ class VehicleRepositoryTest {
         val tariffMotorcycle = TariffObjectMother.tariffOfMotorcycleCC150()
         val tariffPerMotorcycle = TariffMotorcycleService()
         TariffObjectMother.departureVehicleInJuneAtOnePm(tariffMotorcycle)
-        tariffMotorcycle.setTariffVehicle(
-            tariffPerMotorcycle,
-            tariffMotorcycle.vehicleDepartureDate
-        )
+        tariffMotorcycle.setTariffVehicle(tariffPerMotorcycle, tariffMotorcycle.vehicleDepartureDate)
 
         //Act
         vehicleRepository.takeOutVehicle(tariffMotorcycle)

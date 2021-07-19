@@ -26,11 +26,12 @@ class Tariff(var entryDate: Long, vehicle: Vehicle) : Serializable {
 
 
     fun setTariffVehicle(tariffPerVehicle: TariffPerVehicle, departureDate: Long) {
-        getHoursOfParking()
         vehicleDepartureDate = departureDate
+        hours = ((vehicleDepartureDate - entryDate) / MILLS_HOUR).toInt()
+        if (hours == 0) hours = 1
 
-        val priceHour = tariffPerVehicle.getPriceHour()
-        val priceDay = tariffPerVehicle.getPriceDay()
+        val priceHour = tariffPerVehicle.priceHour
+        val priceDay = tariffPerVehicle.priceDay
 
         amount = when {
             hours < MAX_HOUR -> hours * priceHour
@@ -40,13 +41,7 @@ class Tariff(var entryDate: Long, vehicle: Vehicle) : Serializable {
                 val restOfHours = hours % MAX_HOUR_DAY
                 priceDay * days + priceHour * restOfHours
             }
-        } + tariffPerVehicle.getAdditionalValue()
-    }
-
-    private fun getHoursOfParking(): Int {
-        hours = ((vehicleDepartureDate - entryDate) / MILLS_HOUR).toInt()
-        if (hours == 0) hours = 1
-        return hours
+        } + tariffPerVehicle.additionalValue()
     }
 
     fun getEntryDateString() = vehicleEntryDate.convertLongToTime()

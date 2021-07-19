@@ -9,21 +9,18 @@ class TariffMotorcycleService(var cylinderCapacity: Int = 150) : TariffPerVehicl
         const val MAX_CANT_MOTORCYCLE = 10
     }
 
-    override fun getMaxQuantityOfVehicles(): Int {
-        return MAX_CANT_MOTORCYCLE
-    }
+    override val priceDay: Double
+        get() = Prices.CAR.additionalAmount
 
-    override fun getAdditionalValue(): Double {
+    override val priceHour: Double
+        get() = Prices.CAR.hour
+
+    override val maxQuantity: Int
+        get() = TariffCarService.MAX_CANT_CAR
+
+    override fun additionalValue(): Double {
         return Prices.MOTORCYCLE.additionalAmount.takeIf {
             cylinderCapacity > MAX_CYLINDER_CAPACITY
         } ?: 0.0
-    }
-
-    override fun getPriceDay(): Double {
-        return Prices.MOTORCYCLE.day
-    }
-
-    override fun getPriceHour(): Double {
-        return Prices.MOTORCYCLE.hour
     }
 }

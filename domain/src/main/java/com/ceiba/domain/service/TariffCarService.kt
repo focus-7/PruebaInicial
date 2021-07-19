@@ -8,19 +8,16 @@ class TariffCarService : TariffPerVehicle {
         const val MAX_CANT_CAR = 20
     }
 
-    override fun getMaxQuantityOfVehicles(): Int {
-        return MAX_CANT_CAR
-    }
+    override val priceDay: Double
+        get() = Prices.CAR.additionalAmount
 
-    override fun getAdditionalValue(): Double {
+    override val priceHour: Double
+        get() = Prices.CAR.hour
+
+    override val maxQuantity: Int
+        get() = MAX_CANT_CAR
+
+    override fun additionalValue(): Double {
         return Prices.CAR.additionalAmount
-    }
-
-    override fun getPriceDay(): Double {
-        return Prices.CAR.day
-    }
-
-    override fun getPriceHour(): Double {
-        return Prices.CAR.hour
     }
 }

@@ -8,12 +8,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ceiba.domain.valueobject.Status
 import com.ceiba.pruebainicial.R
 import com.ceiba.pruebainicial.adapters.VehicleAdapter
 import com.ceiba.pruebainicial.databinding.FragmentListVehiclesBinding
 import com.ceiba.pruebainicial.utils.hide
 import com.ceiba.pruebainicial.utils.onQueryTextChanged
 import com.ceiba.pruebainicial.utils.show
+import com.ceiba.pruebainicial.utils.showIf
 import com.ceiba.pruebainicial.viewmodel.TariffViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -73,20 +75,15 @@ class VehicleListingFragment : Fragment() {
             }
         })
 
-        viewModel.vehicles.observe(viewLifecycleOwner, { items ->
-            items.let {
-                vehicleAdapter.submitList(it)
-            }
+        viewModel.vehicles.observe(viewLifecycleOwner, { result ->
+            loader.loaderContainer.showIf { result.status == Status.LOADING }
+            emptyContainer.showIf { result.data.isNullOrEmpty() }
+            vehicleAdapter.submitList(result.data)
         })
 
         viewModel.vehiclesByPlate.observe(viewLifecycleOwner, { items ->
-            items.let {
-                if (it.isEmpty())
-                    emptyContainer.show()
-                else
-                    emptyContainer.hide()
-                vehicleAdapter.submitList(it)
-            }
+            emptyContainer.showIf { items.isEmpty() }
+            vehicleAdapter.submitList(items)
         })
     }
 }

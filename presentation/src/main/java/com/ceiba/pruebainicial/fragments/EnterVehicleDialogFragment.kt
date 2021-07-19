@@ -29,7 +29,7 @@ class EnterVehicleDialogFragment : DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = DialogAddVehicleBinding.inflate(inflater, container, false)
         dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -42,55 +42,6 @@ class EnterVehicleDialogFragment : DialogFragment() {
         eventsEntry()
     }
 
-    private fun eventsUI() {
-        binding.radioGroupTypeOfVehicle.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked == R.id.typeMotorcycle)
-                binding.cylinderContainer.show()
-            if (isChecked == R.id.typeCar)
-                binding.cylinderContainer.hide()
-        }
-    }
-
-    private fun eventsEntry() = with(binding) {
-        buttonCancel.setOnClickListener {
-            dismiss()
-        }
-        buttonAdd.setOnClickListener {
-            val c = Calendar.getInstance()
-            if (validateData()) {
-                val tariff = Tariff(c.timeInMillis, getTypeOfVehicle())
-                viewModel.enterVehicle(tariff)
-                findNavController().navigate(R.id.mainFragment)
-            } else {
-                MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(resources.getString(R.string.error))
-                    .setMessage(resources.getString(R.string.error_data))
-                    .setPositiveButton(resources.getString(R.string.confirm)) { _, _ -> }
-                    .show()
-            }
-        }
-    }
-
-    private fun validateData(): Boolean = with(binding) {
-        return when {
-            plate.text.toString().isEmpty() -> false
-            (typeMotorcycle.isChecked && cylinderCapacity.text.toString().isEmpty()) -> false
-            else -> true
-        }
-    }
-
-    private fun getTypeOfVehicle(): Vehicle = with(binding) {
-        val plateUpperCase: String = plate.text.toString().toUpperCase(Locale.getDefault())
-        return if (typeCar.isChecked) {
-            Car(plateUpperCase)
-        } else {
-            Motorcycle(
-                plateUpperCase,
-                cylinderCapacity.text.toString().toInt()
-            )
-        }
-    }
-
     override fun onStart() {
         super.onStart()
         requireDialog().window?.setLayout(
@@ -99,4 +50,64 @@ class EnterVehicleDialogFragment : DialogFragment() {
         )
     }
 
+    private fun eventsUI() {
+        with(binding) {
+            radioGroupTypeOfVehicle.setOnCheckedChangeListener { _, isChecked ->
+                when (isChecked) {
+                    R.id.typeMotorcycle -> cylinderContainer.show()
+                    R.id.typeCar -> cylinderContainer.hide()
+                }
+            }
+        }
+    }
+
+    private fun eventsEntry() {
+        with(binding) {
+            buttonCancel.setOnClickListener {
+                dismiss()
+            }
+            buttonAdd.setOnClickListener {
+                if (isEntryValid()) {
+                    val c = Calendar.getInstance()
+                    val tariff = Tariff(c.timeInMillis, getTypeOfVehicle())
+                    viewModel.enterVehicle(tariff)
+                    findNavController().navigate(R.id.mainFragment)
+                } else {
+                    showErrorDialog()
+                }
+            }
+        }
+    }
+
+    private fun showErrorDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(resources.getString(R.string.error))
+            .setMessage(resources.getString(R.string.error_data))
+            .setPositiveButton(resources.getString(R.string.confirm)) { _, _ -> }
+            .show()
+    }
+
+    private fun isEntryValid(): Boolean {
+        with(binding) {
+            return viewModel.isEntryValid(
+                plate.text.toString(),
+                cylinderCapacity.text.toString(),
+                typeMotorcycle.isChecked
+            )
+        }
+    }
+
+    private fun getTypeOfVehicle(): Vehicle {
+        with(binding) {
+            val plateUpperCase: String = plate.text.toString().toUpperCase(Locale.getDefault())
+            return if (typeCar.isChecked) {
+                Car(plateUpperCase)
+            } else {
+                Motorcycle(
+                    plateUpperCase,
+                    cylinderCapacity.text.toString().toInt()
+                )
+            }
+        }
+    }
 }

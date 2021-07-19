@@ -12,9 +12,9 @@ import com.ceiba.application.service.TariffVehicleApplicationService
 import com.ceiba.domain.aggregate.Tariff
 import com.ceiba.pruebainicial.R
 import com.ceiba.pruebainicial.databinding.DialogTakeOutVehicleBinding
+import com.ceiba.pruebainicial.utils.getFormattedPrice
 import com.ceiba.pruebainicial.viewmodel.TariffViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
 
 @AndroidEntryPoint
 class TakeOutVehicleDialogFragment : DialogFragment() {
@@ -40,25 +40,22 @@ class TakeOutVehicleDialogFragment : DialogFragment() {
     }
 
     private fun eventsUI() = with(binding) {
-        val c = Calendar.getInstance()
         val tariffVehicleApplicationService = TariffVehicleApplicationService()
-
-        tariffOut.vehicleDepartureDate = c.timeInMillis
-
         tariffVehicleApplicationService.calculateTariffVehicle(tariffOut)
 
         entryDate.append(" " + tariffOut.getEntryDateString())
         departureDate.append(" " + tariffOut.getDepartureDateString())
-        payment.append(" $" + tariffOut.amount)
+        payment.append(" " + tariffOut.getFormattedPrice())
     }
 
-    private fun eventsEntry() = with(binding) {
-        buttonCancel.setOnClickListener {
-            dismiss()
-        }
-        buttonPayment.setOnClickListener {
-            viewModel.takeOutVehicle(tariffOut)
-            findNavController().navigate(R.id.mainFragment)
+
+    private fun eventsEntry() {
+        with(binding) {
+            buttonCancel.setOnClickListener { dismiss() }
+            buttonPayment.setOnClickListener {
+                viewModel.takeOutVehicle(tariffOut)
+                findNavController().navigate(R.id.mainFragment)
+            }
         }
     }
 

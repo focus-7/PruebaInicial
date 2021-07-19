@@ -9,6 +9,9 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import com.ceiba.domain.aggregate.Tariff
+import com.google.android.material.snackbar.Snackbar
+import java.text.NumberFormat
 
 inline fun SearchView.onQueryTextChanged(crossinline onQueryTextChanged: (String) -> Unit) {
 
@@ -63,5 +66,12 @@ fun Context.showToast(message: String, duration: Int = Toast.LENGTH_SHORT) {
 fun Fragment.showToast(message: String, duration: Int = Toast.LENGTH_SHORT) {
     requireContext().showToast(message, duration)
 }
+
+fun View.showSnackbar(message: String) {
+    Snackbar.make(this, message, Snackbar.LENGTH_LONG).show()
+}
+
+fun Tariff.getFormattedPrice(): String =
+    NumberFormat.getCurrencyInstance().format(amount)
 
 
